@@ -1,0 +1,44 @@
+How To Include Sound Resources in Lcc-Win32 IDE.
+
+From the menu go to <Design> and select <Open/New>
+
+For creating a new resource, give a name where it asks for a filename.
+F.E:
+"Resources"   and klik open button.
+
+The go again to the <Design> select <New> and then the resource you want.
+
+Here we are going to Add .wav file as resources for our sound. So from the
+<new> select <User Defined>
+
+Give An Identification name to the Sound Resource f.e. ID_SLRP  an
+identification Value >= 100 (Default 100), and then browse the .wav file that
+you are going to use as resource.
+
+In this example the file is at: ./Resources/FrogySound2.wav
+
+Then Select <File> - <Save> and close the Window with the resources.
+
+Include the resource header file that has created to your .c file.
+
+Select <File>-<open> and open the Resource file you just created (.rc). When asked:
+"Open as a Resource file" answer NO.
+
+From the .rc file you just opened, delete the 2-4 lines which writing:
+#ifdef __LCC__
+#include <windows.h>
+#endif
+The above code must be deleted or the resource makes errors - redefinitions! :/
+
+In the case of Sound Resources (User defined) change also the line
+ID_SLRP            with             ID_SLRP RCDATA
+or else it won't work (- Didn't work here!)
+
+Save the .rc file and add it you your project: <Project>-<add/delete files>
+
+Now you can use the resource ID_SLRP, which corresponds to FrogySound2.wav.
+
+The Nice thing with resources, is that all data can be inside the .exe file, without
+having to support your application with extra files.
+
+------------- 

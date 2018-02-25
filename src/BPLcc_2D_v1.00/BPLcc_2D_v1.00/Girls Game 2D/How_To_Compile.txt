@@ -1,0 +1,3 @@
+To Compile Girls Game 2D, create a new project and add only the 
+<BPLcc_2D.c>, <main.c> and <Resources.rc> files at the project
+without using wizard. compile and run! :)

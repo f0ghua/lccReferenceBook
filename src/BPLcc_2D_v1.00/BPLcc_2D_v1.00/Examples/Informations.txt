@@ -1,0 +1,31 @@
+Use <MainExample.c> as a skeleton to create your own applications adding relative
+small amound of code. You can also use <Main.c> which contains comments if you are
+not familiar.
+
+
+First of All you have to Callibrate the Code to your Relative Window Coordinates. :/
+Else the Mouse Won't point at excactly correct coordinates.
+
+To do that run the "Callibrate_BPLcc_2D.exe" file and clik at the upper left corder to
+the yellow pixel. This point will be the Origin of your drawing. You will take 2
+numbers, x and y. In your code's replace them at the BPLcc_Window_Parameters_Set()
+function as the "Callibrate_BPLcc_2D.exe" suggest. That's all!..
+
+But keep in mind that if you run the application to another PC without the same
+"settings" as your's pc, the application might be a little different. - I can't over
+come this... If anyone else can... :)
+
+
+
+To change Application ICON add the code:
+   BPLcc_WinData_SetID(&h2D, BPLCC_INITWINOBJ_ICON, (LPCSTR) ID_YOURICON, false);
+at the end of BPLcc_Window_Parameters_Set() function of the Skeleton Code.
+where ID_YOURICON must be the indentifier of your resource ICON.
+
+
+To change Application Cursor add the code:
+   BPLcc_WinData_SetID(&h2D, BPLCC_INITWINOBJ_CURSOR, (LPCSTR) ID_YOURCURSOR, false);
+at the end of BPLcc_Window_Parameters_Set() function of the Skeleton Code.
+where ID_YOURCURSOR must be the indentifier of your resource CURsOR.
+
+

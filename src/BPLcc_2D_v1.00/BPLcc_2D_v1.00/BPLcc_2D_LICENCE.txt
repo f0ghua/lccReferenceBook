@@ -1,0 +1,25 @@
+            BPLcc 2D Library version 1.00 Release Date 12/13/05
+    BPLcc 2D Library is a group of open source C functions designed for
+      Lcc-Win32 IDE, that give the cabapility to users to create
+                    fast and easy 2D Applications
+            Copyright (C) 2005  Vasileios Kon. Pothos (GR)
+
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    Vasileios Kon. Pothos
+    E-mail: terablade2001@yahoo.gr
+    HomePage:  www.hep.upatras.gr/homepages/HEP_2004/BPothos/index.html
+
