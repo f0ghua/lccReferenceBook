@@ -38,3 +38,24 @@
 
 ### [StringObject](https://github.com/f0ghua/lccReferenceBook/tree/master/src/StrObj)
 > (4k) A small string library as an example of using a virtual function table and creating the object with method-like calls.
+
+### [gclib](https://github.com/f0ghua/lccReferenceBook/tree/master/src/gclib)
+> (337k) I thought it would be handy to have the garbage collector that lcc-win32 uses as a static library, the garbage collector of Hans-J. Boehm and Alan J. Demers.
+
+### [TMalloc](https://github.com/f0ghua/lccReferenceBook/tree/master/src/TMalloc)
+> (11k) TMalloc version 2.0 (14th July 2003) - it checks for not free-ed malloc blocks, bad pointers passed to free and has been extended to check for out-of-bounds copying when using various string functions.
+
+### [Evaluate](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Evaluate)
+> (13k) Evaluate.lib is a library created for parsing and evaluating expressions using order of operations. It can do +, -, \*, /, and ^ as well as any order of parenthesis and brackets. The zip includes instructions, the project and library, and a test example with source code.
+
+### [Evaldemo](https://github.com/f0ghua/lccReferenceBook/tree/master/src/evaldemo)
+> (41k) Demo to use the Parsifal Expressions parser. evaluateExpression is a convenient utility for parsing and evaluating arithmetic expressions at runtime. You can use it, for example, to evaluate expressions read from data files or configuration files or expressions entered directly by users. See the readme.
+
+### [Time_gs](https://github.com/f0ghua/lccReferenceBook/tree/master/src/time_gs)
+> (14k) time_gs has own versions of gmtime(), localtime() and mktime() because of problems encountered with dates on which daylight saving time starts and ends.
+
+### [Gregor](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Gregor)
+> (7k) Gregor is a little Ansi-C-library dealing with the Gregorian Calender. It is capable of "date-math" and different conversions and comparisons within the date-range from 1582-Oct-15 to 4046-Nov-25.
+
+### [Sapi](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Sapi)
+> (21k) With the SAPI interface you'll be able simply to write your applications using the com port. The standard Windows API to communicate via a serial interface are collected here in a straight manner, for common use.

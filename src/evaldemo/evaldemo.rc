@@ -1,0 +1,19 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "evaldemo.h"
+
+
+IDD_MAINDIALOG DIALOG 7, 7, 253, 167
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Program for evaluating arithmetic expressions"
+FONT 8, "Helv"
+BEGIN
+    PUSHBUTTON      "Load demo", IDC_LOAD, 207, 65, 40, 14
+    PUSHBUTTON      "Quit", IDC_QUIT, 207, 82, 40, 14
+    EDITTEXT        IDC_INPUT, 6, 6, 199, 77, ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    DEFPUSHBUTTON   "EVALUATE", IDC_EVAL, 207, 6, 40, 57
+    EDITTEXT        IDC_OUTPUT, 6, 99, 241, 62, ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL
+    CTEXT           "*Output*", 105, 6, 89, 200, 8
+END
