@@ -102,7 +102,7 @@
 > (28k) Notepad clone that uses the rich edit control. (updated on 19th August 2002)
 
 ### [SmallEdit](https://github.com/f0ghua/lccReferenceBook/tree/master/src/SmallEdit)
-> (43k) Another Notepad clone. (RC added by Jacques Laporte)
+> (43k) Another Notepad clone. (RC added by Jacques Laporte), use icons from [MS default icon](https://msdn.microsoft.com/en-us/library/windows/desktop/bb760433(v=vs.85).aspx)
 
 ### [SmallEdit2](https://github.com/f0ghua/lccReferenceBook/tree/master/src/SmallEt2)
 > (167k) Jacques Laporte has added more to this project, part of which is more Unicode support.
