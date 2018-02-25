@@ -62,6 +62,42 @@
 
 ## Windows Programming
 
+### [Generic](https://github.com/f0ghua/lccReferenceBook/tree/master/src/generic)
+> (3.16k) The Generic application of Hello World. Good for beginners.
+
+### [SimpleDlg](https://github.com/f0ghua/lccReferenceBook/tree/master/src/simple)
+> (28k) (2.76k) Using a Dialog as the main window.
+
+### [Moon](https://github.com/f0ghua/lccReferenceBook/tree/master/src/moon)
+> (229k) Displays a Taskbar Icon showing the moon's phases.
+
+### [GenMDI](https://github.com/f0ghua/lccReferenceBook/tree/master/src/genmdi)
+> (5.67k) General MDI listing. (Multiple Document Interface)
+
+### [SubClassBut](https://github.com/f0ghua/lccReferenceBook/tree/master/src/sbclsbut)
+> (4.44k) Simple example of subclassing a control.
+
+### [MemStat](https://github.com/f0ghua/lccReferenceBook/tree/master/src/MemStat)
+> (6.93k) Monitors the memory status. RAM, Paging and Virtual memory.
+
+### [Devcaps](https://github.com/f0ghua/lccReferenceBook/tree/master/src/devcaps)
+> (7.20k) Displays the capabilities of a device context. Console app.
+
+### [RunDlg](https://github.com/f0ghua/lccReferenceBook/tree/master/src/rundlg)
+> (5.12k) Demonstrates creation of a dialog at run-time.
+
+### [RunDlg1](https://github.com/f0ghua/lccReferenceBook/tree/master/src/rundlg1)
+> (9.55k) Improved version of RunDlg. Deals with variable length Unicode arrays when setting up the DLG templates.
+
+### [Crypto](https://github.com/f0ghua/lccReferenceBook/tree/master/src/crypto)
+> (7.11) Small encryption example. Uses the password to encrypt the data.
+
+### [LCCWheel](https://github.com/f0ghua/lccReferenceBook/tree/master/src/lccwheel)
+> (20.6k) LCCWheel adds MouseWheel functionality to WEdit. Great prog. Nice to sutdy taskbar prog.
+
+### [TimeOff](https://github.com/f0ghua/lccReferenceBook/tree/master/src/timeoff)
+> (12.5k) TimeOff a little example on how to use date and timer picker which will quit windows at a given time.
+
 ### [Tinypad](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Tinypad)
 > (28k) Notepad clone that uses the rich edit control. (updated on 19th August 2002)
 

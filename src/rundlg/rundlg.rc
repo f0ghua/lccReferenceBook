@@ -1,0 +1,15 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "rundlgres.h"
+
+IDMAINMENU MENU
+BEGIN
+    POPUP "&File"
+        BEGIN
+        MENUITEM "&Open Owner Dialog", IDM_OPEN
+        MENUITEM "&E&xit", IDM_EXIT
+        END
+END
+

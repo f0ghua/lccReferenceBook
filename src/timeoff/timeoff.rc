@@ -1,0 +1,41 @@
+/*--------------------------------------------------------
+   TIMEOFF.RC -- Turn off computer at a given time.
+--------------------------------------------------------*/
+
+#include <windows.h>
+#include "resource.h"
+
+/****************************
+* Dialogs
+****************************/
+
+IDD_TIMEOFF DIALOGEX DISCARDABLE 0, 0, 156, 122
+STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Time OFF"
+CLASS "TIMEOFF"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_ICON,IDC_STATIC,7,7,20,20
+    CTEXT           "Time OFF v1.0",IDC_TITLE,35,13,114,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,35,22,114,0
+    CTEXT           "Set day, hour, minute and second at which you want your computer to be turned off.",
+                    IDC_STATIC,7,34,142,16
+    LTEXT           "Date",IDC_STATIC,7,64,16,8
+    CONTROL         "DateTimePickerD",IDC_DATEPICKER,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | DTS_LONGDATEFORMAT | WS_TABSTOP,35,57,
+                    114,15
+    LTEXT           "Time",IDC_STATIC,7,85,16,8
+    CONTROL         "DateTimePickerT",IDC_TIMEPICKER,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | DTS_UPDOWN | WS_TABSTOP | 0x8,35,79,114,
+                    15
+    DEFPUSHBUTTON   "Start",IDC_START,7,101,38,14
+    PUSHBUTTON      "Stop",IDC_STOP,59,101,38,14, WS_DISABLED
+    PUSHBUTTON      "Exit",IDC_EXIT,111,101,38,14
+END
+
+/****************************
+* Icons
+****************************/
+
+IDI_ICON ICON DISCARDABLE "icon.ico"
+

@@ -1,0 +1,15 @@
+
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "simpleres.h"
+
+
+IDD_MAINDIALOG DIALOG 7, 20, 195, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "simple"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 36, 66, 40, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 115, 66, 40, 14
+END

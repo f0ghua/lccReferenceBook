@@ -1,0 +1,98 @@
+
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "moon.h"
+
+MAINMENU_D MENU
+BEGIN
+    POPUP "Entry"
+        BEGIN
+        MENUITEM "About", 100
+        MENUITEM "MondPhase beenden", 110
+        END
+END
+MAINMENU_E MENU
+BEGIN
+    POPUP "Entry"
+        BEGIN
+        MENUITEM "About", 100
+        MENUITEM "Exit Moon", 110
+        END
+END
+
+ABOUT_D DIALOG 49, 37, 228, 160
+STYLE DS_MODALFRAME | WS_POPUP | WS_BORDER
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 6, 140, 39, 13
+    ICON            "", IDMYAPPICON, 10, 8, 32, 32, WS_GROUP
+    LTEXT           "Aktuelle Mond-Phase®  Version %s", 10, 56, 8, 166, 10, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "", 11, 56, 24, 164, 16, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "LCC-WIN32 für Windows 95, 98, ME, 2000, NT 4.x", 12, 56, 43, 165, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "htp://www.cs.virginia.edu/~lcc-win32", 13, 56, 52, 166, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Lizenznehmer:", 14, 56, 67, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Name", 15, 56, 79, 165, 8, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Factory", 16, 56, 88, 164, 8, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Verfügbarer Arbeitsspeicher:", 17, 56, 112, 90, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Systemresourcen:", 19, 56, 124, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "123 MByte", 18, 155, 112, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "25 %", 20, 155, 124, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    GROUPBOX        "", 40, 55, 99, 166, 5
+END
+
+ABOUT_E DIALOG 49, 37, 228, 160
+STYLE DS_MODALFRAME | WS_POPUP | WS_BORDER
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 6, 140, 39, 13
+    ICON            "", IDMYAPPICON, 10, 8, 32, 32, WS_GROUP
+    LTEXT           "Current Phase of Moon®  Version %s", 10, 56, 8, 166, 10, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "", 11, 56, 24, 164, 16, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "LCC-WIN32 for Windows 95, 98, ME, 2000, NT 4.x", 12, 56, 43, 165, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "htp://www.cs.virginia.edu/~lcc-win32", 13, 56, 52, 166, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Licence Owner:", 14, 56, 67, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Name", 15, 56, 79, 165, 8, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Factory", 16, 56, 88, 164, 8, SS_NOPREFIX | NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Real available memory:", 17, 56, 112, 90, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Memory in use:", 19, 56, 124, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "123 MByte", 18, 155, 112, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "25 %", 20, 155, 124, 60, 8, NOT WS_VISIBLE | NOT WS_GROUP
+    GROUPBOX        "", 40, 55, 99, 166, 5
+END
+100 ICON "d:\\lcc\\projects\\moon\\images\\00.ico"
+101 ICON "d:\\lcc\\projects\\moon\\images\\01.ico"
+102 ICON "d:\\lcc\\projects\\moon\\images\\02.ico"
+103 ICON "d:\\lcc\\projects\\moon\\images\\03.ico"
+104 ICON "d:\\lcc\\projects\\moon\\images\\04.ico"
+105 ICON "d:\\lcc\\projects\\moon\\images\\05.ico"
+106 ICON "d:\\lcc\\projects\\moon\\images\\06.ico"
+107 ICON "d:\\lcc\\projects\\moon\\images\\07.ico"
+108 ICON "d:\\lcc\\projects\\moon\\images\\08.ico"
+109 ICON "d:\\lcc\\projects\\moon\\images\\09.ico"
+110 ICON "d:\\lcc\\projects\\moon\\images\\10.ico"
+111 ICON "d:\\lcc\\projects\\moon\\images\\11.ico"
+112 ICON "d:\\lcc\\projects\\moon\\images\\12.ico"
+113 ICON "d:\\lcc\\projects\\moon\\images\\13.ico"
+114 ICON "d:\\lcc\\projects\\moon\\images\\14.ico"
+115 ICON "d:\\lcc\\projects\\moon\\images\\15.ico"
+116 ICON "d:\\lcc\\projects\\moon\\images\\16.ico"
+117 ICON "d:\\lcc\\projects\\moon\\images\\17.ico"
+118 ICON "d:\\lcc\\projects\\moon\\images\\18.ico"
+119 ICON "d:\\lcc\\projects\\moon\\images\\19.ico"
+120 ICON "d:\\lcc\\projects\\moon\\images\\20.ico"
+121 ICON "d:\\lcc\\projects\\moon\\images\\21.ico"
+122 ICON "d:\\lcc\\projects\\moon\\images\\22.ico"
+123 ICON "d:\\lcc\\projects\\moon\\images\\23.ico"
+124 ICON "d:\\lcc\\projects\\moon\\images\\24.ico"
+125 ICON "d:\\lcc\\projects\\moon\\images\\25.ico"
+126 ICON "d:\\lcc\\projects\\moon\\images\\26.ico"
+127 ICON "d:\\lcc\\projects\\moon\\images\\27.ico"
+128 ICON "d:\\lcc\\projects\\moon\\images\\28.ico"
+129 ICON "d:\\lcc\\projects\\moon\\images\\29.ico"
+130 ICON "d:\\lcc\\projects\\moon\\images\\myapp.ico"
+200 BITMAP "d:\\lcc\\projects\\moon\\images\\about.bmp"
+STRINGTABLE
+BEGIN
+    1, "Copyright©1999 - 2001 by Eberhard Funck\nemail: funck@hildesheim.sgh-net.de"
+END

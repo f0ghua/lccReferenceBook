@@ -1,0 +1,18 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "SubClassButton.h"
+
+
+ID_WND DIALOGEX 0, 0, 151, 50
+STYLE DS_CENTER | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Subclassbutton"
+FONT 8, "MS Sans Serif"
+CLASS "SUBCLASSBUT"
+BEGIN
+    PUSHBUTTON      "A Button - Click Me", ID_BTN, 34, 30, 80, 14
+    CTEXT           "Move the mouse over the button\nclick close box to exit.", 0, 7, 8, 137, 18
+END
+"hand" CURSOR "hand.cur"

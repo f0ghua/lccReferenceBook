@@ -1,0 +1,17 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "rundlg1res.h"
+
+ID_ICON ICON "hc.Ico"
+
+IDMAINMENU MENU
+BEGIN
+    POPUP "&File"
+        BEGIN
+        MENUITEM "&Open Owner Dialog", IDM_OPEN
+        MENUITEM "&E&xit", IDM_EXIT
+        END
+END
+

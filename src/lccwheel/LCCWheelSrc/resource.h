@@ -1,0 +1,12 @@
+#define IDM_POPUP		100
+#define IDC_CONFIGURE	200
+#define IDC_ENABLED		201
+#define IDC_ABOUT		202
+#define IDC_EXIT		203
+#define IDI_MOUSEON		300
+#define IDI_MOUSEOFF	301
+#define IDI_TNAICON		302
+#define IDD_CONFIG		400
+#define IDC_NULL		500
+#define IDC_LNUMBER		600
+#define IDC_SPIN		700

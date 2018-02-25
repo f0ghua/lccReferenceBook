@@ -1,0 +1,45 @@
+/*----------------------------
+   		GenMDI.rc
+  ----------------------------*/
+
+
+#include <windows.h>
+#include "GenMDI.h"
+
+GenMenu MENU
+	BEGIN    	
+	POPUP "&File"        	
+		BEGIN          	
+		MENUITEM "&New",			IDM_NEW          	
+		MENUITEM "&Open...",		IDM_OPEN          	
+		MENUITEM "&Save",			IDM_SAVE          	
+		MENUITEM "Save &As...",		IDM_SAVEAS          	
+		MENUITEM SEPARATOR
+		MENUITEM "&Print",		IDM_PRINT     	
+		MENUITEM SEPARATOR
+		MENUITEM "E&xit",			IDM_EXIT          	
+		END     	
+	POPUP "&Edit"          	
+	BEGIN          	
+		MENUITEM "&Undo",		IDM_UNDO          	
+		MENUITEM SEPARATOR          	
+		MENUITEM "Cu&t",		IDM_CUT          	
+		MENUITEM "&Copy",		IDM_COPY          	
+		MENUITEM "&Paste",		IDM_PASTE          	
+		MENUITEM "De&lete",		IDM_DEL          	
+		MENUITEM SEPARATOR          	
+		MENUITEM "&Select All",		IDM_SELALL          	
+	END   
+	POPUP "&Window"          	
+	BEGIN     
+		MENUITEM "&Cascade",		IDM_CASCADE     	
+		MENUITEM "&Tile",		IDM_TILE          		
+		MENUITEM "Arrange &Icons",	IDM_ARRANGE
+		MENUITEM "Close &All", 		IDM_CLOSEALL
+	END   	
+	POPUP "&Help"          	
+	BEGIN          	
+		MENUITEM "&Help...",		IDM_HELP          	
+		MENUITEM "&About...",	IDM_ABOUT          	
+	END     	
+END
