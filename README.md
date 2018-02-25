@@ -12,3 +12,6 @@
 
 ### [MMP](https://github.com/f0ghua/lccReferenceBook/tree/master/src/MMP)
 > (158k) (UPDATE 30th Nov) Master Music Program. This program is used as a music file catalog and player. Uses FMOD to play music.
+
+### [FindFile](https://github.com/f0ghua/lccReferenceBook/tree/master/src/FindFile)
+> 	(170k) FindFile finds files or text in files. Scans drives fast and will search by dates or sizes. You can launch, delete, copy, move, drag & drop files etc. Link with ole32.lib oleaut32.lib shell32.lib urlmon.lib uuid.lib wlib.lib

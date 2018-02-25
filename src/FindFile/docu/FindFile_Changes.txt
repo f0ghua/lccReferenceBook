@@ -1,0 +1,30 @@
+25th February 2005. Version 1.5.1.3 (JF)
+Changed code in the DoShellExecuteEx() function that puts 
+quotes around a filename. This has been added so that paths 
+with spaces do not cause problems with certain applications.
+(FireFox for example will not accept paths with spaces.)
+
+26th December 2004, Version 1.5.1.1 (SZ)
++ Sort also by Folders in Listview
+* Sort UI changed, sort increasing at first click,
+  remember sorting direction only for last sorted column
+
+20th September 2004. The 'Browse for folder' (BROWSE) option (JF)
+started with 'Desktop/My Documents', changed to start with 
+'C:\' which makes folder navigation a little easier for most 
+operations.
+
+8th September 2004. FindFile searches for folders as well as files. (JF)
+
+29th June 2004. When searching with extended dates and sizes, (JF)
+FindFile would not deal with the dates. Thanks to Stephan Zorn 
+for reporting that.
+
+28th June 2004. Bug fixed and a new dialog added. Also this version (JF)
+works with the ContextMenuExt.dll that you will find in the 
+OLE & COM section. 
+  
+4th June 2004. Commandline extensions have been added by Stephan Zorn. (SZ)
+Stephan has explained the switches in a text file, 'findfile_cmdline.txt'. 
+
+All changes before 4th June 2004 were not documented.

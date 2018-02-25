@@ -1,0 +1,81 @@
+
+Thanks to John Findlay, who wrote
+=======================================================
+
+                     FindFile
+
+=======================================================
+Version 1.4.0.1
+04/06/30
+=======================================================
+
+
+Commandline extensions:
+=======================================================
+
+FindFile [/F...][/P...][/T...][/S#][/W#][/C#][/O#][/E#][/D#]
+
+
+strings:    ...  (including spaces!) delimited by the next switch '/'
+
+    File Search filter: /F
+
+    Base Folder path:   /P
+
+    Text Search filter: /T
+
+
+switches:   #
+
+    Search SubFolders:  /S+     on
+                        /S-     off
+                       (default = last setting read from registry)
+
+    AutoWildcard:       /W+     on
+                        /W-     off
+                       (default = last setting read from registry)
+
+    Case Sensitive:     /C+     on
+                        /C-     off (default)
+
+    File Counts only:   /O+     on
+                        /O-     off (default)
+
+    Edit-control focus: /E+     File search (default)
+                        /E-     Text search
+
+    Execute search:     /D+     on
+                        /D-     off (default)
+
+
+examples:
+
+FindFile.exe /Tconfig.sys/D+
+    executes a case insensitive text search for "config.sys"
+    search in all files on all local drives
+
+FindFile /Pe:\lcc\include/Tcb_addstring/S-/C-/D+
+    executes a case insensitive text search for "cb_addstring"
+    in all files only in directory "e:\lcc\include"
+
+FindFile.exe /Pe:\lcc\include/Tcb_addstring/F*.h
+    prepares (no execution)
+    a case insensitive text search for "cb_addstring"
+    in all "*.h" header files
+    in directory "e:\lcc\include" and subdirs
+
+FindFile /PC:\My own windir with spaces/Tdon't know exactly/D+
+    executes a case insensitive text search for "don't know exactly"
+    in all files in directory "C:\My own windir with spaces" and subdirs
+
+
+and now:
+    enjoy composing your own searches
+
+hint:
+    if you find any bugs, you may keep them ;-)))
+
+________________________
+Stephan Zorn
+2004.06.30
+
