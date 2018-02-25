@@ -1,0 +1,13 @@
+/* Wedit generated resource file */
+#include <windows.h>
+#include "tstledlibres.h"
+
+
+IDD_MAINDIALOG DIALOG 17, -8, 158, 92
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION " TstLedLib"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 5, 30, 22, 51
+    LTEXT           "", ID_VERSION, 10, 8, 140, 10
+END

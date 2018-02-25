@@ -1,0 +1,2217 @@
+/******************************************************************
+*                                                                 *
+*  strsafe.h -- This module defines safer C library string        *
+*               routine replacements. These are meant to make C   *
+*               a bit more safe in reference to security and      *
+*               robustness                                        *
+*                                                                 *
+*  Copyright (c) Microsoft Corp.  All rights reserved.            *
+*                                                                 *
+******************************************************************/
+/*++
+
+STDAPI StringCchCopy(LPTSTR pszDest,
+                     size_t cchDest,
+                     LPCTSTR pszSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcpy'.
+    The size of the destination buffer (in characters) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This routine is not a replacement for strncpy.  That function will pad the
+    destination string with extra null termination characters if the count is
+    greater than the length of the source string, and it will fail to null
+    terminate the destination string if the source string length is greater
+    than or equal to the count. You can not blindly use this instead of strncpy:
+    it is common for code to use it to "patch" strings and you would introduce
+    errors if the code started null terminating in the middle of the string.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was copied without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    copied to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cchDest     -   size of destination buffer in characters.
+                    length must be = (_tcslen(src) + 1) to hold all of the
+                    source including the null terminator
+
+    pszSrc      -   source string which must be null terminated
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL. See StringCchCopyEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCbCopy(LPTSTR pszDest,
+                    size_t cbDest,
+                    LPCTSTR pszSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcpy'.
+    The size of the destination buffer (in bytes) is a parameter and this
+    function will not write past the end of this buffer and it will ALWAYS
+    null terminate the destination buffer (unless it is zero length).
+
+    This routine is not a replacement for strncpy.  That function will pad the
+    destination string with extra null termination characters if the count is
+    greater than the length of the source string, and it will fail to null
+    terminate the destination string if the source string length is greater
+    than or equal to the count. You can not blindly use this instead of strncpy:
+    it is common for code to use it to "patch" strings and you would introduce
+    errors if the code started null terminating in the middle of the string.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was copied without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    copied to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cbDest      -   size of destination buffer in bytes.
+                    length must be = ((_tcslen(src) + 1) * sizeof(TCHAR)) to
+                    hold all of the source including the null terminator
+
+    pszSrc      -   source string which must be null terminated
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL.  See StringCbCopyEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCchCopyEx(TCHAR pszDest,
+                       size_t cchDest,
+                       LPCTSTR pszSrc,
+                       LPTSTR* ppszDestEnd,
+                       size_t* pcchRemaining,
+                       DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcpy' with
+    some additional parameters.  In addition to functionality provided by
+    StringCchCopy, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be = (_tcslen(pszSrc) + 1) to hold all of
+                        the source including the null terminator
+
+    pszSrc          -   source string which must be null terminated
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return the
+                        number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcpy
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCopyEx(TCHAR pszDest,
+                      size_t cbDest,
+                      LPCTSTR pszSrc,
+                      LPTSTR* ppszDestEnd,
+                      size_t* pcbRemaining,
+                      DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcpy' with
+    some additional parameters.  In addition to functionality provided by
+    StringCbCopy, this routine also returns a pointer to the end of the
+    destination string and the number of bytes left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be ((_tcslen(pszSrc) + 1) * sizeof(TCHAR)) to
+                        hold all of the source including the null terminator
+
+    pszSrc          -   source string which must be null terminated
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   pcbRemaining is non-null,the function will return the
+                        number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcpy
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchCopyN(LPTSTR pszDest,
+                      size_t cchDest,
+                      LPCTSTR pszSrc,
+                      size_t cchSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncpy'.
+    The size of the destination buffer (in characters) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This routine is meant as a replacement for strncpy, but it does behave
+    differently. This function will not pad the destination buffer with extra
+    null termination characters if cchSrc is greater than the length of pszSrc.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the entire string or the first cchSrc characters were copied without
+    truncation and the resultant destination string was null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    copied to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cchDest     -   size of destination buffer in characters.
+                    length must be = (_tcslen(src) + 1) to hold all of the
+                    source including the null terminator
+
+    pszSrc      -   source string
+
+    cchSrc      -   maximum number of characters to copy from source string
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL. See StringCchCopyNEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCbCopyN(LPTSTR pszDest,
+                     size_t cbDest,
+                     LPCTSTR pszSrc,
+                     size_t cbSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncpy'.
+    The size of the destination buffer (in bytes) is a parameter and this
+    function will not write past the end of this buffer and it will ALWAYS
+    null terminate the destination buffer (unless it is zero length).
+
+    This routine is meant as a replacement for strncpy, but it does behave
+    differently. This function will not pad the destination buffer with extra
+    null termination characters if cbSrc is greater than the size of pszSrc.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the entire string or the first cbSrc characters were copied without
+    truncation and the resultant destination string was null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    copied to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cbDest      -   size of destination buffer in bytes.
+                    length must be = ((_tcslen(src) + 1) * sizeof(TCHAR)) to
+                    hold all of the source including the null terminator
+
+    pszSrc      -   source string
+
+    cbSrc       -   maximum number of bytes to copy from source string
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL.  See StringCbCopyEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCchCopyNEx(TCHAR pszDest,
+                        size_t cchDest,
+                        LPCTSTR pszSrc,
+                        size_t cchSrc,
+                        LPTSTR* ppszDestEnd,
+                        size_t* pcchRemaining,
+                        DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncpy' with
+    some additional parameters.  In addition to functionality provided by
+    StringCchCopyN, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination
+    string including the null terminator. The flags parameter allows
+    additional controls.
+
+    This routine is meant as a replacement for strncpy, but it does behave
+    differently. This function will not pad the destination buffer with extra
+    null termination characters if cchSrc is greater than the length of pszSrc.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be = (_tcslen(pszSrc) + 1) to hold all of
+                        the source including the null terminator
+
+    pszSrc          -   source string
+
+    cchSrc          -   maximum number of characters to copy from the source
+                        string
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return the
+                        number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcpy
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified. If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL. An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCopyNEx(TCHAR pszDest,
+                       size_t cbDest,
+                       LPCTSTR pszSrc,
+                       size_t cbSrc,
+                       LPTSTR* ppszDestEnd,
+                       size_t* pcbRemaining,
+                       DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncpy' with
+    some additional parameters.  In addition to functionality provided by
+    StringCbCopyN, this routine also returns a pointer to the end of the
+    destination string and the number of bytes left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+    This routine is meant as a replacement for strncpy, but it does behave
+    differently. This function will not pad the destination buffer with extra
+    null termination characters if cbSrc is greater than the size of pszSrc.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be ((_tcslen(pszSrc) + 1) * sizeof(TCHAR)) to
+                        hold all of the source including the null terminator
+
+    pszSrc          -   source string
+
+    cbSrc           -   maximum number of bytes to copy from source string
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   pcbRemaining is non-null,the function will return the
+                        number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcpy
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all copied and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the copy operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchCat(LPTSTR pszDest,
+                    size_t cchDest,
+                    LPCTSTR pszSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcat'.
+    The size of the destination buffer (in characters) is a parameter and this
+    function will not write past the end of this buffer and it will ALWAYS
+    null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was concatenated without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    appended to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -  destination string which must be null terminated
+
+    cchDest     -  size of destination buffer in characters.
+                   length must be = (_tcslen(pszDest) + _tcslen(pszSrc) + 1)
+                   to hold all of the combine string plus the null
+                   terminator
+
+    pszSrc      -  source string which must be null terminated
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL.  See StringCchCatEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCat(LPTSTR pszDest,
+                   size_t cbDest,
+                   LPCTSTR pszSrc);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcat'.
+    The size of the destination buffer (in bytes) is a parameter and this
+    function will not write past the end of this buffer and it will ALWAYS
+    null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was concatenated without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases as much of pszSrc will be
+    appended to pszDest as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest     -  destination string which must be null terminated
+
+    cbDest      -  size of destination buffer in bytes.
+                   length must be = ((_tcslen(pszDest) + _tcslen(pszSrc) + 1) * sizeof(TCHAR)
+                   to hold all of the combine string plus the null
+                   terminator
+
+    pszSrc      -  source string which must be null terminated
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL.  See StringCbCatEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchCatEx(LPTSTR pszDest,
+                      size_t cchDest,
+                      LPCTSTR pszSrc,
+                      LPTSTR* ppszDestEnd,
+                      size_t* pcchRemaining,
+                      DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcat' with
+    some additional parameters.  In addition to functionality provided by
+    StringCchCat, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cchDest         -   size of destination buffer in characters
+                        length must be (_tcslen(pszDest) + _tcslen(pszSrc) + 1)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string which must be null terminated
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function appended any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return the
+                        number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcat
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any pre-existing
+                    or truncated string
+
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any pre-existing or
+                    truncated string
+
+        STRSAFE_NO_TRUNCATION
+                    if the function returns STRSAFE_E_INSUFFICIENT_BUFFER, pszDest
+                    will not contain a truncated string, it will remain unchanged.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCatEx(LPTSTR pszDest,
+                     size_t cbDest,
+                     LPCTSTR pszSrc,
+                     LPTSTR* ppszDestEnd,
+                     size_t* pcbRemaining,
+                     DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strcat' with
+    some additional parameters.  In addition to functionality provided by
+    StringCbCat, this routine also returns a pointer to the end of the
+    destination string and the number of bytes left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be ((_tcslen(pszDest) + _tcslen(pszSrc) + 1) * sizeof(TCHAR)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string which must be null terminated
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function appended any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   if pcbRemaining is non-null, the function will return
+                        the number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+                    this flag is useful for emulating functions like lstrcat
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any pre-existing
+                    or truncated string
+
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any pre-existing or
+                    truncated string
+
+        STRSAFE_NO_TRUNCATION
+                    if the function returns STRSAFE_E_INSUFFICIENT_BUFFER, pszDest
+                    will not contain a truncated string, it will remain unchanged.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchCatN(LPTSTR pszDest,
+                     size_t cchDest,
+                     LPCTSTR pszSrc,
+                     size_t cchMaxAppend);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncat'.
+    The size of the destination buffer (in characters) is a parameter as well as
+    the maximum number of characters to append, excluding the null terminator.
+    This function will not write past the end of the destination buffer and it will
+    ALWAYS null terminate pszDest (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if all of pszSrc or the first cchMaxAppend characters were appended to the
+    destination string and it was null terminated, otherwise it will return a
+    failure code. In failure cases as much of pszSrc will be appended to pszDest
+    as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be (_tcslen(pszDest) + min(cchMaxAppend, _tcslen(pszSrc)) + 1)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string
+
+    cchMaxAppend    -   maximum number of characters to append
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL. See StringCchCatNEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if all of pszSrc or the first cchMaxAppend characters were
+                    concatenated to pszDest and the resultant dest string was
+                    null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCatN(LPTSTR pszDest,
+                    size_t cbDest,
+                    LPCTSTR pszSrc,
+                    size_t cbMaxAppend);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncat'.
+    The size of the destination buffer (in bytes) is a parameter as well as
+    the maximum number of bytes to append, excluding the null terminator.
+    This function will not write past the end of the destination buffer and it will
+    ALWAYS null terminate pszDest (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if all of pszSrc or the first cbMaxAppend bytes were appended to the
+    destination string and it was null terminated, otherwise it will return a
+    failure code. In failure cases as much of pszSrc will be appended to pszDest
+    as possible, and pszDest will be null terminated.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be ((_tcslen(pszDest) + min(cbMaxAppend / sizeof(TCHAR), _tcslen(pszSrc)) + 1) * sizeof(TCHAR)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string
+
+    cbMaxAppend     -   maximum number of bytes to append
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL. See StringCbCatNEx if you require
+    the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if all of pszSrc or the first cbMaxAppend bytes were
+                    concatenated to pszDest and the resultant dest string was
+                    null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchCatNEx(LPTSTR pszDest,
+                       size_t cchDest,
+                       LPCTSTR pszSrc,
+                       size_t cchMaxAppend,
+                       LPTSTR* ppszDestEnd,
+                       size_t* pcchRemaining,
+                       DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncat', with
+    some additional parameters.  In addition to functionality provided by
+    StringCchCatN, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be (_tcslen(pszDest) + min(cchMaxAppend, _tcslen(pszSrc)) + 1)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string
+
+    cchMaxAppend    -   maximum number of characters to append
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function appended any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return the
+                        number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any pre-existing
+                    or truncated string
+
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any pre-existing or
+                    truncated string
+
+        STRSAFE_NO_TRUNCATION
+                    if the function returns STRSAFE_E_INSUFFICIENT_BUFFER, pszDest
+                    will not contain a truncated string, it will remain unchanged.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if all of pszSrc or the first cchMaxAppend characters were
+                    concatenated to pszDest and the resultant dest string was
+                    null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbCatNEx(LPTSTR pszDest,
+                      size_t cbDest,
+                      LPCTSTR pszSrc,
+                      size_t cbMaxAppend
+                      LPTSTR* ppszDestEnd,
+                      size_t* pcchRemaining,
+                      DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strncat', with
+    some additional parameters.  In addition to functionality provided by
+    StringCbCatN, this routine also returns a pointer to the end of the
+    destination string and the number of bytes left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string which must be null terminated
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be ((_tcslen(pszDest) + min(cbMaxAppend / sizeof(TCHAR), _tcslen(pszSrc)) + 1) * sizeof(TCHAR)
+                        to hold all of the combine string plus the null
+                        terminator.
+
+    pszSrc          -   source string
+
+    cbMaxAppend     -   maximum number of bytes to append
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function appended any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   if pcbRemaining is non-null, the function will return the
+                        number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any pre-existing
+                    or truncated string
+
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any pre-existing or
+                    truncated string
+
+        STRSAFE_NO_TRUNCATION
+                    if the function returns STRSAFE_E_INSUFFICIENT_BUFFER, pszDest
+                    will not contain a truncated string, it will remain unchanged.
+
+Notes:
+    Behavior is undefined if source and destination strings overlap.
+
+    pszDest and pszSrc should not be NULL unless the STRSAFE_IGNORE_NULLS flag
+    is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and pszSrc
+    may be NULL.  An error may still be returned even though NULLS are ignored
+    due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if all of pszSrc or the first cbMaxAppend bytes were
+                    concatenated to pszDest and the resultant dest string was
+                    null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchVPrintf(LPTSTR pszDest,
+                        size_t cchDest,
+                        LPCTSTR pszFormat,
+                        va_list argList);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'vsprintf'.
+    The size of the destination buffer (in characters) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was printed without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases it will return a truncated
+    version of the ideal result.
+
+Arguments:
+
+    pszDest     -  destination string
+
+    cchDest     -  size of destination buffer in characters
+                   length must be sufficient to hold the resulting formatted
+                   string, including the null terminator.
+
+    pszFormat   -  format string which must be null terminated
+
+    argList     -  va_list from the variable arguments according to the
+                   stdarg.h convention
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL.  See StringCchVPrintfEx if you
+    require the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was sufficient space in the dest buffer for
+                    the resultant string and it was null terminated.
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbVPrintf(LPTSTR pszDest,
+                       size_t cbDest,
+                       LPCTSTR pszFormat,
+                       va_list argList);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'vsprintf'.
+    The size of the destination buffer (in bytes) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was printed without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases it will return a truncated
+    version of the ideal result.
+
+Arguments:
+
+    pszDest     -  destination string
+
+    cbDest      -  size of destination buffer in bytes
+                   length must be sufficient to hold the resulting formatted
+                   string, including the null terminator.
+
+    pszFormat   -  format string which must be null terminated
+
+    argList     -  va_list from the variable arguments according to the
+                   stdarg.h convention
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL.  See StringCbVPrintfEx if you
+    require the handling of NULL values.
+
+
+Return Value:
+
+    S_OK        -   if there was sufficient space in the dest buffer for
+                    the resultant string and it was null terminated.
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchPrintf(LPTSTR pszDest,
+                       size_t cchDest,
+                       LPCTSTR pszFormat,
+                       ...);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'sprintf'.
+    The size of the destination buffer (in characters) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was printed without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases it will return a truncated
+    version of the ideal result.
+
+Arguments:
+
+    pszDest     -  destination string
+
+    cchDest     -  size of destination buffer in characters
+                   length must be sufficient to hold the resulting formatted
+                   string, including the null terminator.
+
+    pszFormat   -  format string which must be null terminated
+
+    ...         -  additional parameters to be formatted according to
+                   the format string
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL.  See StringCchPrintfEx if you
+    require the handling of NULL values.
+
+Return Value:
+
+    S_OK        -   if there was sufficient space in the dest buffer for
+                    the resultant string and it was null terminated.
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbPrintf(LPTSTR pszDest,
+                      size_t cbDest,
+                      LPCTSTR pszFormat,
+                      ...);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'sprintf'.
+    The size of the destination buffer (in bytes) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string was printed without truncation and null terminated, otherwise
+    it will return a failure code. In failure cases it will return a truncated
+    version of the ideal result.
+
+Arguments:
+
+    pszDest     -  destination string
+
+    cbDest      -  size of destination buffer in bytes
+                   length must be sufficient to hold the resulting formatted
+                   string, including the null terminator.
+
+    pszFormat   -  format string which must be null terminated
+
+    ...         -  additional parameters to be formatted according to
+                   the format string
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL.  See StringCbPrintfEx if you
+    require the handling of NULL values.
+
+
+Return Value:
+
+    S_OK        -   if there was sufficient space in the dest buffer for
+                    the resultant string and it was null terminated.
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchPrintfEx(LPTSTR pszDest,
+                         size_t cchDest,
+                         LPTSTR* ppszDestEnd,
+                         size_t* pcchRemaining,
+                         DWORD dwFlags,
+                         LPCTSTR pszFormat,
+                         ...);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'sprintf' with
+    some additional parameters.  In addition to functionality provided by
+    StringCchPrintf, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be sufficient to contain the resulting
+                        formatted string plus the null terminator.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function printed any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return
+                        the number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+    pszFormat       -   format string which must be null terminated
+
+    ...             -   additional parameters to be formatted according to
+                        the format string
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL unless the STRSAFE_IGNORE_NULLS
+    flag is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and
+    pszFormat may be NULL.  An error may still be returned even though NULLS
+    are ignored due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbPrintfEx(LPTSTR pszDest,
+                        size_t cbDest,
+                        LPTSTR* ppszDestEnd,
+                        size_t* pcbRemaining,
+                        DWORD dwFlags,
+                        LPCTSTR pszFormat,
+                        ...);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'sprintf' with
+    some additional parameters.  In addition to functionality provided by
+    StringCbPrintf, this routine also returns a pointer to the end of the
+    destination string and the number of bytes left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be sufficient to contain the resulting
+                        formatted string plus the null terminator.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function printed any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   if pcbRemaining is non-null, the function will return
+                        the number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+    pszFormat       -   format string which must be null terminated
+
+    ...             -   additional parameters to be formatted according to
+                        the format string
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL unless the STRSAFE_IGNORE_NULLS
+    flag is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and
+    pszFormat may be NULL.  An error may still be returned even though NULLS
+    are ignored due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchVPrintfEx(LPTSTR pszDest,
+                          size_t cchDest,
+                          LPTSTR* ppszDestEnd,
+                          size_t* pcchRemaining,
+                          DWORD dwFlags,
+                          LPCTSTR pszFormat,
+                          va_list argList);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'vsprintf' with
+    some additional parameters.  In addition to functionality provided by
+    StringCchVPrintf, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cchDest         -   size of destination buffer in characters.
+                        length must be sufficient to contain the resulting
+                        formatted string plus the null terminator.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function printed any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return
+                        the number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+    pszFormat       -   format string which must be null terminated
+
+    argList         -   va_list from the variable arguments according to the
+                        stdarg.h convention
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL unless the STRSAFE_IGNORE_NULLS
+    flag is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and
+    pszFormat may be NULL.  An error may still be returned even though NULLS
+    are ignored due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCbVPrintfEx(LPTSTR pszDest,
+                         size_t cbDest,
+                         LPTSTR* ppszDestEnd,
+                         size_t* pcbRemaining,
+                         DWORD dwFlags,
+                         LPCTSTR pszFormat,
+                         va_list argList);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'vsprintf' with
+    some additional parameters.  In addition to functionality provided by
+    StringCbVPrintf, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cbDest          -   size of destination buffer in bytes.
+                        length must be sufficient to contain the resulting
+                        formatted string plus the null terminator.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return
+                        a pointer to the end of the destination string.  If the
+                        function printed any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   if pcbRemaining is non-null, the function will return
+                        the number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT(""))
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated. This will overwrite any truncated
+                    string returned when the failure is
+                    STRSAFE_E_INSUFFICIENT_BUFFER
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string. This will overwrite any truncated string
+                    returned when the failure is STRSAFE_E_INSUFFICIENT_BUFFER.
+
+    pszFormat       -   format string which must be null terminated
+
+    argList         -   va_list from the variable arguments according to the
+                        stdarg.h convention
+
+Notes:
+    Behavior is undefined if destination, format strings or any arguments
+    strings overlap.
+
+    pszDest and pszFormat should not be NULL unless the STRSAFE_IGNORE_NULLS
+    flag is specified.  If STRSAFE_IGNORE_NULLS is passed, both pszDest and
+    pszFormat may be NULL.  An error may still be returned even though NULLS
+    are ignored due to insufficient space.
+
+Return Value:
+
+    S_OK        -   if there was source data and it was all concatenated and the
+                    resultant dest string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all falure cases
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that the print operation
+                    failed due to insufficient space. When this error occurs,
+                    the destination buffer is modified to contain a truncated
+                    version of the ideal result and is null terminated. This
+                    is useful for situations where truncation is ok.
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function
+
+--*/
+
+/*++
+
+STDAPI StringCchGets(LPTSTR pszDest,
+                     size_t cchDest);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'gets'.
+    The size of the destination buffer (in characters) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This routine is not a replacement for fgets.  That function does not replace
+    newline characters with a null terminator.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if any characters were read from stdin and copied to pszDest and pszDest was
+    null terminated, otherwise it will return a failure code.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cchDest     -   size of destination buffer in characters.
+
+Notes:
+    pszDest should not be NULL. See StringCchGetsEx if you require the handling
+    of NULL values.
+
+    cchDest must be > 1 for this function to succeed.
+
+Return Value:
+
+    S_OK        -   data was read from stdin and copied, and the resultant dest
+                    string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_END_OF_FILE
+                -   this return value indicates an error or end-of-file condition,
+                    use feof or ferror to determine which one has occured.
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that there was insufficient
+                    space in the destination buffer to copy any data
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCbGets(LPTSTR pszDest,
+                    size_t cbDest);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'gets'.
+    The size of the destination buffer (in bytes) is a parameter and
+    this function will not write past the end of this buffer and it will
+    ALWAYS null terminate the destination buffer (unless it is zero length).
+
+    This routine is not a replacement for fgets.  That function does not replace
+    newline characters with a null terminator.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if any characters were read from stdin and copied to pszDest and pszDest was
+    null terminated, otherwise it will return a failure code.
+
+Arguments:
+
+    pszDest     -   destination string
+
+    cbDest      -   size of destination buffer in bytes.
+
+Notes:
+    pszDest should not be NULL. See StringCbGetsEx if you require the handling
+    of NULL values.
+
+    cbDest must be > sizeof(TCHAR) for this function to succeed.
+
+Return Value:
+
+    S_OK        -   data was read from stdin and copied, and the resultant dest
+                    string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_END_OF_FILE
+                -   this return value indicates an error or end-of-file condition,
+                    use feof or ferror to determine which one has occured.
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that there was insufficient
+                    space in the destination buffer to copy any data
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCchGetsEx(LPTSTR pszDest,
+                       size_t cchDest,
+                       LPTSTR* ppszDestEnd,
+                       size_t* pcchRemaining,
+                       DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'gets' with
+    some additional parameters. In addition to functionality provided by
+    StringCchGets, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cchDest         -   size of destination buffer in characters.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcchRemaining   -   if pcchRemaining is non-null, the function will return the
+                        number of characters left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated.
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string.
+
+Notes:
+    pszDest should not be NULL unless the STRSAFE_IGNORE_NULLS flag is specified.
+    If STRSAFE_IGNORE_NULLS is passed and pszDest is NULL, an error may still be
+    returned even though NULLS are ignored
+
+    cchDest must be > 1 for this function to succeed.
+
+Return Value:
+
+    S_OK        -   data was read from stdin and copied, and the resultant dest
+                    string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_END_OF_FILE
+                -   this return value indicates an error or end-of-file condition,
+                    use feof or ferror to determine which one has occured.
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that there was insufficient
+                    space in the destination buffer to copy any data
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCbGetsEx(LPTSTR pszDest,
+                      size_t cbDest,
+                      LPTSTR* ppszDestEnd,
+                      size_t* pcbRemaining,
+                      DWORD dwFlags);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'gets' with
+    some additional parameters. In addition to functionality provided by
+    StringCbGets, this routine also returns a pointer to the end of the
+    destination string and the number of characters left in the destination string
+    including the null terminator. The flags parameter allows additional controls.
+
+Arguments:
+
+    pszDest         -   destination string
+
+    cbDest          -   size of destination buffer in bytes.
+
+    ppszDestEnd     -   if ppszDestEnd is non-null, the function will return a
+                        pointer to the end of the destination string.  If the
+                        function copied any data, the result will point to the
+                        null termination character
+
+    pcbRemaining    -   if pbRemaining is non-null, the function will return the
+                        number of bytes left in the destination string,
+                        including the null terminator
+
+    dwFlags         -   controls some details of the string copy:
+
+        STRSAFE_FILL_BEHIND_NULL
+                    if the function succeeds, the low byte of dwFlags will be
+                    used to fill the uninitialize part of destination buffer
+                    behind the null terminator
+
+        STRSAFE_IGNORE_NULLS
+                    treat NULL string pointers like empty strings (TEXT("")).
+
+        STRSAFE_FILL_ON_FAILURE
+                    if the function fails, the low byte of dwFlags will be
+                    used to fill all of the destination buffer, and it will
+                    be null terminated.
+
+        STRSAFE_NO_TRUNCATION /
+        STRSAFE_NULL_ON_FAILURE
+                    if the function fails, the destination buffer will be set
+                    to the empty string.
+
+Notes:
+    pszDest should not be NULL unless the STRSAFE_IGNORE_NULLS flag is specified.
+    If STRSAFE_IGNORE_NULLS is passed and pszDest is NULL, an error may still be
+    returned even though NULLS are ignored
+
+    cbDest must be > sizeof(TCHAR) for this function to succeed
+
+Return Value:
+
+    S_OK        -   data was read from stdin and copied, and the resultant dest
+                    string was null terminated
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    STRSAFE_E_END_OF_FILE
+                -   this return value indicates an error or end-of-file condition,
+                    use feof or ferror to determine which one has occured.
+
+    STRSAFE_E_INSUFFICIENT_BUFFER /
+    HRESULT_CODE(hr) == ERROR_INSUFFICIENT_BUFFER
+                -   this return value is an indication that there was insufficient
+                    space in the destination buffer to copy any data
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCchLength(LPCTSTR psz,
+                       size_t cchMax,
+                       size_t* pcch);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strlen'.
+    It is used to make sure a string is not larger than a given length, and
+    it optionally returns the current length in characters not including
+    the null terminator.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string is non-null and the length including the null terminator is
+    less than or equal to cchMax characters.
+
+Arguments:
+
+    psz         -   string to check the length of
+
+    cchMax      -   maximum number of characters including the null terminator
+                    that psz is allowed to contain
+
+    pcch        -   if the function succeeds and pcch is non-null, the current length
+                    in characters of psz excluding the null terminator will be returned.
+                    This out parameter is equivalent to the return value of strlen(psz)
+
+Notes:
+    psz can be null but the function will fail
+
+    cchMax should be greater than zero or the function will fail
+
+Return Value:
+
+    S_OK        -   psz is non-null and the length including the null terminator is
+                    less than or equal to cchMax characters
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+/*++
+
+STDAPI StringCbLength(LPCTSTR psz,
+                      size_t cbMax,
+                      size_t* pcb);
+
+Routine Description:
+
+    This routine is a safer version of the C built-in function 'strlen'.
+    It is used to make sure a string is not larger than a given length, and
+    it optionally returns the current length in bytes not including
+    the null terminator.
+
+    This function returns a hresult, and not a pointer.  It returns a S_OK
+    if the string is non-null and the length including the null terminator is
+    less than or equal to cbMax bytes.
+
+Arguments:
+
+    psz         -   string to check the length of
+
+    cbMax       -   maximum number of bytes including the null terminator
+                    that psz is allowed to contain
+
+    pcb         -   if the function succeeds and pcb is non-null, the current length
+                    in bytes of psz excluding the null terminator will be returned.
+                    This out parameter is equivalent to the return value of strlen(psz) * sizeof(TCHAR)
+
+Notes:
+    psz can be null but the function will fail
+
+    cbMax should be greater than or equal to sizeof(TCHAR) or the function will fail
+
+Return Value:
+
+    S_OK        -   psz is non-null and the length including the null terminator is
+                    less than or equal to cbMax bytes
+
+    failure     -   you can use the macro HRESULT_CODE() to get a win32 error
+                    code for all hresult falure cases
+
+    It is strongly recommended to use the SUCCEEDED() / FAILED() macros to test the
+    return value of this function.
+
+--*/
+
+
