@@ -1,0 +1,78 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "memoryboosterres.h"
+
+1 MANIFEST "memorybooster.exe.manifest"
+
+3000 ICON "big.ico"
+3001 ICON "ram0.ico"
+3002 ICON "ram1.ico"
+3003 ICON "ram2.ico"
+3004 ICON "ram3.ico"
+3005 ICON "ram4.ico"
+3006 ICON "wt.ico"
+3007 ICON "ram.ico"
+
+
+DLGMAIN DIALOG 118, 17, 285, 200
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Memory Booster"
+FONT 8, "MS Sans Serif"
+BEGIN
+
+	CONTROL         "", ID_LV, "SysListView32", WS_BORDER|LVS_REPORT, 12,24,260,143,WS_EX_STATICEDGE
+    CONTROL         "", ID_DMTAB, "SysTabControl32", 0x0 | WS_CLIPSIBLINGS, 6, 6, 273, 187
+
+	CONTROL			"",ID_STATIC1,"Static",SS_BITMAP,12,24,260,143,WS_EX_STATICEDGE
+    GROUPBOX        "", ID_DMGP1, 18, 28, 248, 49
+    GROUPBOX        "", ID_DMGP2, 18, 83, 248, 79
+    PUSHBUTTON      "", ID_OPTIMIZE, 138, 172, 65, 14
+    PUSHBUTTON      "OK", IDOK, 207, 172, 65, 14
+    CONTROL         "", ID_DMTB, "msctls_trackbar32",TBS_ENABLESELRANGE, 23, 39, 237, 18
+    CONTROL         "", ID_DMPROGR1, "msctls_progress32", 0, 27, 108, 229, 11
+    CONTROL         "", ID_DMPROGR2, "msctls_progress32", 0, 27, 142, 229, 11
+    CONTROL         "", ID_DMPROGR3, "msctls_progress32", 0, 28, 40, 227, 14
+    CTEXT           "", ID_DMT1, 48, 62, 180, 10
+    LTEXT           "", ID_DMT2, 27, 98, 229, 10
+    LTEXT           "", ID_DMT3, 27, 132, 229, 10
+	LTEXT           "0", ID_DMT4, 30, 58, 20, 10
+	RTEXT           "255", ID_DMT5, 233, 58, 20, 10
+
+
+    PUSHBUTTON      "", ID_KILL, 69, 172, 65, 14
+    PUSHBUTTON      "", ID_REFR, 138, 172, 65, 14
+
+	AUTOCHECKBOX	"",ID_CH1,30,40,210,10
+	AUTOCHECKBOX	"",ID_CH2,30,53,210,10
+	AUTOCHECKBOX	"",ID_CH3,30,66,210,10
+	AUTOCHECKBOX	"",ID_CH4,30,79,210,10
+
+
+    GROUPBOX        "", ID_DMGP3, 18, 27, 248, 67
+    GROUPBOX        "", ID_DMGP4, 18, 98, 248, 64
+
+	AUTOCHECKBOX	"", ID_CH5,30,110,200,10
+    LTEXT           "", ID_DMT6, 55, 136, 200, 10
+    LTEXT           "", ID_DMT7, 55, 149, 200, 10
+
+	AUTOCHECKBOX	"Enable intellectual optimization",ID_CH6,44,123,160,11
+
+    LTEXT           "", ID_DMT9, 232, 136, 20, 10
+    LTEXT           "MB", ID_DMT10, 232, 149, 20, 10
+
+	EDITTEXT        ID_ED1, 190, 134, 30, 11, ES_AUTOHSCROLL | ES_NUMBER | ES_RIGHT
+	EDITTEXT        ID_ED2, 190, 147, 30, 11, ES_AUTOHSCROLL | ES_NUMBER | ES_RIGHT
+    EDITTEXT        ID_ED3, 137, 174, 30, 11, ES_AUTOHSCROLL | ES_NUMBER | ES_RIGHT
+
+    LTEXT           "", ID_DMT8, 12, 175, 120, 11, SS_CENTER , WS_EX_STATICEDGE
+
+	GROUPBOX        "", ID_DMGP5, 18, 28, 248, 49
+    GROUPBOX        "", ID_DMGP6, 18, 83, 248, 77
+	CONTROL 		ICO_BRAM,ICO_BRAM,"Static",SS_ICON,25, 39, 32, 32
+	CONTROL 		ICO_WT,ICO_WT,"Static",SS_ICON,26, 97, 32, 32
+    CTEXT           "", ID_DMT11, 65, 41, 180, 30
+    CTEXT           "", ID_DMT12, 65, 100, 185, 50
+
+END
