@@ -1,0 +1,168 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "tinypadres.h"
+
+ID_ICON ICON "tinypad.ico"
+
+IDMAINMENU MENU
+BEGIN
+    POPUP "&File"
+        BEGIN
+        MENUITEM "&New	Ctrl+N", IDM_NEW
+        MENUITEM "&Open	Ctrl+O", IDM_OPEN
+        MENUITEM "&Save	Ctrl+S", IDM_SAVE
+        MENUITEM "Save As...", IDM_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "Print	Ctrl+P", IDM_PRINT
+        MENUITEM SEPARATOR
+		MENUITEM "&New Editor",  IDM_NEWEDITOR
+		MENUITEM "&Properties",  IDM_PROPERTIES
+		MENUITEM SEPARATOR
+        MENUITEM "&E&xit", IDM_EXIT
+        END
+    POPUP "&Edit"
+        BEGIN
+        MENUITEM "&Undo	Ctrl+Z", IDM_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cut	Ctrl+X", IDM_CUT
+        MENUITEM "Copy	Ctrl+C", IDM_COPY
+        MENUITEM "Paste	Ctrl+V", IDM_PASTE
+        MENUITEM "Delete	Del", IDM_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Select All	Ctrl+A", IDM_SELECTALL
+		MENUITEM "Date/Time", IDM_DATETIME
+		MENUITEM "Word Count", IDM_WORDCOUNT
+        END
+    POPUP "&Search"
+        BEGIN
+        MENUITEM "&Find	Ctrl+F", IDM_FIND
+        MENUITEM "&Find Next	F3", IDM_FINDNEXT
+        MENUITEM "Replace	Ctrl+H", IDM_REPLACE
+        MENUITEM "Goto Line	Ctrl+G", IDM_GOTOLINE
+        END
+	POPUP "&Options"
+		BEGIN
+        MENUITEM "Options", IDM_OPTIONS
+        MENUITEM SEPARATOR
+		MENUITEM "&Full screen\tF11", IDM_FULLSCREEN
+		MENUITEM "&Word Warp", IDM_WORDWARP
+		MENUITEM "&Always on top", IDM_ALWAYSONTOP
+		END
+    POPUP "&Help"
+        BEGIN
+        MENUITEM "&About", IDM_ABOUT
+        END
+END
+
+IDACCEL ACCELERATORS
+BEGIN
+	"N",	IDM_NEW,VIRTKEY, CONTROL, NOINVERT
+	"O",	IDM_OPEN,VIRTKEY, CONTROL, NOINVERT
+	"S",	IDM_SAVE,VIRTKEY, CONTROL, NOINVERT
+	"P",	IDM_PRINT,VIRTKEY, CONTROL, NOINVERT
+	"F",	IDM_FIND,VIRTKEY, CONTROL, NOINVERT
+	VK_F3,	IDM_FINDNEXT, VIRTKEY
+	"H",	IDM_REPLACE, VIRTKEY, CONTROL, NOINVERT
+	"G",	IDM_GOTOLINE, VIRTKEY, CONTROL, NOINVERT
+	VK_F11, IDM_FULLSCREEN, VIRTKEY
+END
+
+DLG_FIND DIALOG 10, 10, 259, 50
+STYLE DS_LOCALEDIT | DS_MODALFRAME | DS_CENTER | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Find"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FINDEDIT, 9, 13, 190, 13, ES_AUTOHSCROLL
+    PUSHBUTTON      "&Find", IDOK, 210, 6, 41, 13
+    PUSHBUTTON      "&Cancel", IDCANCEL, 210, 22, 41, 13
+    CTEXT           "Press F3 to find next", IDC_FINDHELP, 12, 2, 182, 10
+    AUTOCHECKBOX    "Whole Word", IDC_WHOLEWORD, 11, 32, 56, 8
+    AUTOCHECKBOX    "Match case", IDC_MATCHCASE, 70, 32, 54, 8
+    AUTORADIOBUTTON "Up", IDC_UP, 126, 31, 31, 10
+    AUTORADIOBUTTON "Down", IDC_DOWN, 160, 31, 39, 10
+END
+
+DLG_REPLACE DIALOG 10, 10, 277, 80
+STYLE DS_LOCALEDIT | DS_MODALFRAME | DS_CENTER | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Replace"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FINDEDIT, 9, 19, 190, 13, ES_AUTOHSCROLL
+    PUSHBUTTON      "&Find next", IDOK, 210, 10, 58, 13, WS_DISABLED
+    PUSHBUTTON      "&Cancel", IDCANCEL, 210, 61, 59, 13
+    AUTOCHECKBOX    "Whole Word", IDC_WHOLEWORD, 11, 64, 56, 8
+    AUTOCHECKBOX    "Match case", IDC_MATCHCASE, 70, 64, 54, 8
+    AUTORADIOBUTTON "Up", IDC_UP, 126, 63, 31, 10
+    AUTORADIOBUTTON "Down", IDC_DOWN, 160, 63, 39, 10
+    EDITTEXT        IDC_REDIT, 9, 46, 190, 13, ES_AUTOHSCROLL
+    PUSHBUTTON      "&Replace", IDC_REPLACE, 210, 24, 58, 13, WS_DISABLED
+    PUSHBUTTON      "Replace &All", IDC_REPLACEALL, 210, 39, 58, 13, WS_DISABLED
+    LTEXT           "Find what:", 5004, 10, 6, 78, 12
+    LTEXT           "Replace with:", 5005, 9, 34, 70, 12
+END
+
+DLG_GOTOLINE DIALOG 165, 81, 119, 48
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Goto Line"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "OK", IDOK, 10, 26, 40, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 70, 26, 40, 14
+    EDITTEXT        IDC_LINENO, 10, 8, 100, 12, ES_AUTOHSCROLL | ES_NUMBER
+END
+
+DLG_OPTIONS DIALOG DISCARDABLE  0, 0, 183, 54
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,137,7,39,14
+    PUSHBUTTON      "Cancel",IDCANCEL,137,25,39,14
+    GROUPBOX        "",IDC_STATIC,5,0,124,49
+    LTEXT           "Background Color:",IDC_STATIC,20,14,60,8
+    LTEXT           "",IDC_BACKCOLORBOX,85,11,28,14,SS_NOTIFY | WS_BORDER
+    LTEXT           "Text Color:",IDC_STATIC,20,33,35,8
+    LTEXT           "",IDC_TEXTCOLORBOX,85,29,28,14,SS_NOTIFY | WS_BORDER
+END
+
+DLG_DATETIME DIALOG DISCARDABLE  0, 0, 191, 134
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Date & Time"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,134,17,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,134,34,50,14
+    LISTBOX         IDC_DATEDIALOG_LIST,7,17,117,109,LBS_NOINTEGRALHEIGHT |
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Available formats:",IDC_STATIC,7,7,56,8
+END
+
+STRINGTABLE
+BEGIN
+	IDM_NEW,		"Create a new document"
+	IDM_OPEN,		"Opens an existing document"
+	IDM_SAVE,		"Saves the document"
+	IDM_SAVEAS,		"Saves the document under different name"
+	IDM_PRINT,		"Print the document using default printer"
+	IDM_NEWEDITOR,	"Start another copy of this cool editor"
+	IDM_PROPERTIES,	"Show file properties dialog"
+	IDM_EXIT,		"Quit this great program"
+	IDM_UNDO,		"Fix last miss"
+	IDM_CUT,		"Move text to clipboard"
+	IDM_COPY,		"Copy text to clipboard"
+	IDM_PASTE,		"Paste text from clipboard"
+	IDM_DELETE,		"Delete selected text"
+	IDM_SELECTALL,	"Select all document text"
+	IDM_DATETIME,	"Insert or date"
+	IDM_FIND,		"Find word or phase in document"
+	IDM_FINDNEXT,	"Find next searced word"
+	IDM_REPLACE,	"Replace words to another"
+	IDM_GOTOLINE,	"Jump the document in specifid line"
+	IDM_OPTIONS,	"View or change program options"
+	IDM_FULLSCREEN, "Change between window and full screen mode"
+	IDM_WORDWARP,	"Toggle line en between carrier return and window mode"
+	IDM_ALWAYSONTOP,"If checked, Tinyedit will be set to always be the top window."
+	IDM_ABOUT		"Display version info"
+END

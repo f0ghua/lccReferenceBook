@@ -59,3 +59,14 @@
 
 ### [Sapi](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Sapi)
 > (21k) With the SAPI interface you'll be able simply to write your applications using the com port. The standard Windows API to communicate via a serial interface are collected here in a straight manner, for common use.
+
+## Windows Programming
+
+### [Tinypad](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Tinypad)
+> (28k) Notepad clone that uses the rich edit control. (updated on 19th August 2002)
+
+### [SmallEdit](https://github.com/f0ghua/lccReferenceBook/tree/master/src/SmallEdit)
+> (43k) Another Notepad clone. (RC added by Jacques Laporte)
+
+### [SmallEdit2](https://github.com/f0ghua/lccReferenceBook/tree/master/src/SmallEt2)
+> (167k) Jacques Laporte has added more to this project, part of which is more Unicode support.
