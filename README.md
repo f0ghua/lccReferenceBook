@@ -98,6 +98,27 @@
 ### [TimeOff](https://github.com/f0ghua/lccReferenceBook/tree/master/src/timeoff)
 > (12.5k) TimeOff a little example on how to use date and timer picker which will quit windows at a given time.
 
+### [DriveJump](https://github.com/f0ghua/lccReferenceBook/tree/master/src/driverjump)
+> (33.2k) Drive Jump is a pop-up drive browser. Right click the program icon in the system tray and browse your drives.
+
+### [Magnetic](https://github.com/f0ghua/lccReferenceBook/tree/master/src/magnetic)
+> (3.76k) Magnetic demonstrates how to make your window snap into position like WinAmp.
+
+### [SHBffo](https://github.com/f0ghua/lccReferenceBook/tree/master/src/shbffo)
+> (147k) I wrote this code to provide a better "directory picker" dialog for the Wise Installation System that supports browsing the network neighborhood.
+
+### [Oracle](https://github.com/f0ghua/lccReferenceBook/tree/master/src/oracle)
+> (92k) Here is a short program mainly demonstrating non rectangular window. Also, it will give you *objective* answers about your everyday life ;-)
+
+### [Coolmenu](https://github.com/f0ghua/lccReferenceBook/tree/master/src/coolmenu)
+> (17.5k) Coolmenu demonstrates how to add  some adornments to your menus.
+
+### [KillProc](https://github.com/f0ghua/lccReferenceBook/tree/master/src/KillProc)
+> (14.1k) KillProcess lists all (most?) running processes. Select one from the list and shut it down. (Updated to use a list view)
+
+### [OwnBut](https://github.com/f0ghua/lccReferenceBook/tree/master/src/ownbut)
+> (15.5k) OwnBut draws ownerdraw buttons. Similar to Owner (above) but better.
+
 ### [Tinypad](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Tinypad)
 > (28k) Notepad clone that uses the rich edit control. (updated on 19th August 2002)
 
@@ -106,3 +127,25 @@
 
 ### [SmallEdit2](https://github.com/f0ghua/lccReferenceBook/tree/master/src/SmallEt2)
 > (167k) Jacques Laporte has added more to this project, part of which is more Unicode support.
+
+### [WindowSizer](https://github.com/f0ghua/lccReferenceBook/tree/master/src/WinSizer)
+> (23k) Re-sizes and/or Moves a window automatically. The idea is too keep your (some nasty website) windows from opening too big (those annoying ads!) and/or from opening with the Close (x) button out-of-bounds.
+
+### [CrossBox](https://github.com/f0ghua/lccReferenceBook/tree/master/src/crossbox)
+> (8k) CrossBox makes a full screen cross cursor and drag box for graphics selecting. Perhaps it will be useful to someone.
+
+### [NCPaint](https://github.com/f0ghua/lccReferenceBook/tree/master/src/NCPaint)
+> (13k) NCPaint paints the title bar, borders & window icon, it also manages moving and re-sizing of the window. If the windows properties are changed it will re-size the title bar. It needs more work though, particularly drawing the menu. (quite difficult)
+
+### [GlobalMessageHook](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Msghook)
+> (13k) Demonstrates a global hook. A a system wide WH_GETMESSAGE hook that captures WM_PAINT messages.
+
+### [XMsgBox](https://github.com/f0ghua/lccReferenceBook/tree/master/src/XMsgBox)
+> (16k) The XMsgBox code is designed to extend the functionality of the
+MessageBox API. (Read the readme.txt)
+> Timed Message box with countdown.
+> The message box can be set to close after a certain time. 
+> The countdown can be displayed as part of the message text.
+
+### [UEH](https://github.com/f0ghua/lccReferenceBook/tree/master/src/Ueh)
+> (33k) A rudimentary crash report logger meant to aid tracking down bugs in programs compiled without debug information. It is based on sample code from Matt Pietrek's "Under the Hood" column in the April 1997 issue of Microsoft Systems Journal.

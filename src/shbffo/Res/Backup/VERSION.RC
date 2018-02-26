@@ -1,0 +1,36 @@
+#include <windows.h>
+#include <winver.h>
+#include "version.h"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILE_VERSION_NUMBERS
+ PRODUCTVERSION PROD_VERSION_NUMBERS
+ FILEFLAGSMASK 0x3FL
+ FILEFLAGS 0x0L
+ FILEOS VOS__WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE 0x0L
+ {
+    BLOCK "StringFileInfo"
+    {
+       BLOCK "040904E4"
+       {
+	  // Solid portion of the Version tab
+          VALUE "FileDescription", FILE_DESCRIPTION
+          VALUE "FileVersion", FILE_VERSION
+          VALUE "LegalCopyright", COPYRIGHT
+	  // Clickable entries, appear in alphabetical order
+          VALUE "CompanyName", COMPANY
+          VALUE "InternalName", INTERNAL_NAME
+          VALUE "OriginalFilename", ORIGINAL_FILENAME
+          VALUE "ProductName", PRODUCT_NAME
+          VALUE "ProductVersion", PRODUCT_VERSION
+	  VALUE "Company URL", URL
+       }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+       VALUE "Translation", 0x409, 1252
+    }
+ }

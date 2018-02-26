@@ -1,0 +1,1101 @@
+Document Type: WSE
+item: Global
+  Version=9.01
+  Title=BrowseForFolder
+  Flags=01000100
+  Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=9
+  Progress Bar DLL=%_WISE_%\Progress\WIZ%_EXE_OS_TYPE_%.DLL
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010010110000001000
+  Message Font=MS Sans Serif
+  Font Size=8
+  Pages Modified=00100000001000100000000000000000
+  Extra Pages=00000000000000000000000000110000
+  Disk Label=Default
+  Disk Filename=SETUP
+  Patch Flags=0000000000000001
+  Patch Threshold=85
+  Patch Memory=4000
+  MIF PDF Version=1.0
+  MIF SMS Version=2.0
+  FTP Cluster Size=20
+  Dialogs Version=7
+  Crystal Format=10111100101100000010001001001001
+  Step View=&Properties
+  Variable Name1=_SYS_
+  Variable Default1=C:\WINDOWS\SYSTEM
+  Variable Flags1=00001000
+  Variable Name2=_WIN_
+  Variable Default2=C:\WINDOWS
+  Variable Flags2=00001000
+  Variable Name3=_WISE_
+  Variable Default3=C:\PROGRAMME\WISE INSTALLATION SYSTEM
+  Variable Flags3=00001000
+  Variable Name4=_INIT_WINDOW_
+  Variable Default4=HIDE
+end
+item: Remark
+  Text=Script:      browseforfolder.wse
+end
+item: Remark
+  Text=Author:     Ralf Buschmann
+end
+item: Remark
+  Text=Contact:   ralf@backmagic.de
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Purpose:   Sample script demonstrating how to use the BrowseForFolder function in shbffo.dll
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Requires:  shbffo.dll, Wise InstallBuilder/InstallMaster 7.x or higher
+end
+item: Remark
+  Text=Date:         29/10/2001
+end
+item: Remark
+  Text=Version:     2.0
+end
+item: Remark
+end
+item: Remark
+end
+item: Remark
+  Text============= Constants setting the root of the browse dialog ============
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=When passed to BrowseForFolder, these contants initialize the root of the browse dialog
+end
+item: Remark
+  Text=to the directory identified by the following values (CSIDLs). These constants are used
+end
+item: Remark
+  Text=in parameter 8 of the BrowseForFolder function.
+end
+item: Remark
+end
+item: Remark
+  Text=Windows desktop - virtual folder at the root of the name space.
+end
+item: Set Variable
+  Variable=ID_DESKTOP
+  Value=0
+end
+item: Remark
+  Text=File system directory that contains the user's program groups (which are also file system directories).
+end
+item: Set Variable
+  Variable=ID_PROGRAMS
+  Value=2
+end
+item: Remark
+  Text=Virtual directory containing installed printers.
+end
+item: Set Variable
+  Variable=ID_PRINTERS
+  Value=4
+end
+item: Remark
+  Text=File system directory containing Start menu items (the root of the start menu)
+end
+item: Set Variable
+  Variable=ID_STARTMENU
+  Value=11
+end
+item: Remark
+  Text=My Computer - virtual folder containing everything on the local computer: storage devices, printers, and Control Panel.
+end
+item: Remark
+  Text=The folder may also contain mapped network drives.
+end
+item: Set Variable
+  Variable=ID_DRIVES
+  Value=17
+end
+item: Remark
+  Text=Network Neighborhood - virtual folder representing the top level of the network hierarchy.
+end
+item: Set Variable
+  Variable=ID_NETWORK
+  Value=18
+end
+item: Remark
+  Text=File system containing the "all users" start menu items (the root of the start menu).
+end
+item: Remark
+  Text=Supported only in Windows NT/2000/XP and on Windows9x/ME with user profiles.
+end
+item: Set Variable
+  Variable=ID_CSTARTMENU
+  Value=22
+end
+item: Remark
+  Text=File system directory containing the "all users" program groups (which are also file system directories).
+end
+item: Remark
+  Text=Supported only in Windows NT/2000/XP.
+end
+item: Set Variable
+  Variable=ID_CPROGRAMS
+  Value=23
+end
+item: Remark
+  Text=The Windows directory. Valid only for Windows ME/2000/XP.
+end
+item: Set Variable
+  Variable=ID_WINDOWS
+  Value=36
+end
+item: Remark
+  Text=The "System" subfolder of the Windows directory. Valid only for Windows ME/2000/XP.
+end
+item: Set Variable
+  Variable=ID_SYSTEM
+  Value=37
+end
+item: Remark
+  Text=The default "Program Files" firectory. Valid only for Windows ME/2000/XP.
+end
+item: Set Variable
+  Variable=ID_PROGFILES
+  Value=38
+end
+item: Remark
+  Text=======================================================================
+end
+item: Remark
+end
+item: Remark
+end
+item: Remark
+  Text============= Flags defining what can be selected in the browse dialog ============
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=When passed to BrowseForFolder, these constants control what can be selected
+end
+item: Remark
+  Text=in the browse dialog. These constants are used in parameter 3 of the BrowseForFolder function.
+end
+item: Remark
+end
+item: Remark
+  Text=Only returns file system directories. If the user selects folders that are not part of the file system, the OK button is grayed.
+end
+item: Set Variable
+  Variable=BROWSEFSDIRS
+  Value=1
+end
+item: Remark
+  Text=Only returns computers. If the user selects anything other than a computer, the OK button is grayed.
+end
+item: Set Variable
+  Variable=BROWSECOMPUTER
+  Value=4096
+end
+item: Remark
+  Text=Only returns printers. If the user selects anything other than a printer, the OK button is grayed.
+end
+item: Set Variable
+  Variable=BROWSEPRINTER
+  Value=8192
+end
+item: Remark
+  Text=Only return file system ancestors. An ancestor is a subfolder that is beneath the root folder in the namespace hierarchy.
+end
+item: Remark
+  Text=If the user selects an ancestor of the root folder that is not part of the file system, the OK button is grayed.
+end
+item: Set Variable
+  Variable=BROWSEFSANCEST
+  Value=8
+end
+item: Remark
+  Text===================================================================
+end
+item: Remark
+end
+item: Remark
+end
+item: Remark
+  Text============= Flags controling the appearance of the browse dialog ============
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=When passed to BrowseForFolder, these constants add various UI enhancements.
+end
+item: Remark
+  Text=These constants are used in parameter 4 of the BrowseForFolder function.
+end
+item: Remark
+end
+item: Remark
+  Text=Include a "New Folder" button in the dialog.
+end
+item: Set Variable
+  Variable=BFF_NEWFOLDER
+  Value=1
+end
+item: Remark
+  Text=Include an edit box in the dialog where the user can type a path.
+end
+item: Set Variable
+  Variable=BFF_EDITBOX
+  Value=2
+end
+item: Remark
+  Text=Make the edit box read-only (can only be used with BFFUI_EDITBOX).
+end
+item: Set Variable
+  Variable=BFF_EDITBOXRO
+  Value=4
+end
+item: Remark
+  Text=Normally, when an existing path is passed to shbffo.dll, the directory
+end
+item: Remark
+  Text=tree in the browse dialog will be expanded to this path. This flag disbales this.
+end
+item: Set Variable
+  Variable=BFF_DONTEXPAND
+  Value=8
+end
+item: Remark
+  Text=Normally, when an existing path is passed to shbffo.dll, the last directory
+end
+item: Remark
+  Text=level of this path will be appended to any directory the user selects in the browse
+end
+item: Remark
+  Text=dialog. This flag disables this (mimics the "Don't append" checkbox in Wise's standard
+end
+item: Remark
+  Text=Directory Tree Browse control).
+end
+item: Set Variable
+  Variable=BFF_DONTAPPEND
+  Value=16
+end
+item: Remark
+  Text=Make the dialog resizable.
+end
+item: Set Variable
+  Variable=BFF_RESIZABLE
+  Value=32
+end
+item: Remark
+  Text===================================================================
+end
+item: Remark
+end
+item: Remark
+  Text=A note about multi-language support: the dialog displayed by the BrowseForFolder function is
+end
+item: Remark
+  Text=automatically localized in the Windows system language. The only string you need to localize
+end
+item: Remark
+  Text=yourself is the text on the "New Folder" button if you choose to use this feature. The name of
+end
+item: Remark
+  Text=the language the installation uses is stored in the automatic runtime variable LANG. See the
+end
+item: Remark
+  Text="Empty Project.wse" templates in the Template directory for an example.
+end
+item: Remark
+end
+item: Remark
+  Text=Install DLL to a temporary location
+end
+item: Get Temporary Filename
+  Variable=SHBFFO.DLL
+end
+item: Set Variable
+  Variable=SHBFFO.DLL
+  Value=%TEMP%\%SHBFFO.DLL%
+end
+item: Check Disk Space
+end
+item: Install File
+  Source=.\shbffo.dll
+  Destination=%SHBFFO.DLL%
+  Flags=0000000010100010
+end
+item: Remark
+end
+item: Remark
+  Text=Initialize default installation directory for example 2.
+end
+item: Set Variable
+  Variable=APPTITLE
+  Value=BrowseForFolder
+end
+item: Get Registry Key Value
+  Variable=PROGRAM_FILES
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files
+  Value Name=ProgramFilesDir
+  Flags=00000100
+end
+item: Set Variable
+  Variable=MAINDIR2
+  Value=%PROGRAM_FILES%\%APPTITLE%
+  Flags=00001100
+end
+item: Remark
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=topimage.bmp
+  X Position=0
+  Y Position=0
+  Filler Color=0
+  Flags=00000010
+end
+item: Remark
+  Text=BrowseForFolder Demo
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Double click on the following script item and select "View - Script Editor" to see how it works.
+end
+item: Custom Dialog Set
+  Name=BrowseForFolder Demo
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=BrowseForFolder Demo
+    Title French=Choisissez la localisation de destination
+    Title German=Zielpfad wählen
+    Title Portuguese=Escolher Local de Destino
+    Title Spanish=Elegir una localización de destino
+    Title Italian=Scegli Posizione di Destinazione
+    Title Danish=Vælg destinationsmappe
+    Title Dutch=Kies doellocatie
+    Title Norwegian=Velg målplassering
+    Title Swedish=Välj ställe för installationen
+    Width=293
+    Height=275
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=168 236 210 250
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=126 236 168 250
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=218 236 260 250
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=5 40 280 86
+      Action=1
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+      Text=Example 1
+    end
+    item: Static
+      Rectangle=10 48 275 65
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Standard Browse For Folder dialog, selected path is displayed in a read-only edit control. The user needs to pick an existing directory. Only file system directories are permitted.
+    end
+    item: Static
+      Rectangle=10 69 230 81
+      Action=3
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=11 71 229 80
+      Destination Dialog=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000010000000
+      Text=%MAINDIR1%
+    end
+    item: Push Button
+      Rectangle=233 68 275 82
+      Alternate=EXAMPLE1
+      Action=7
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Browse...
+      Text French=P&arcourir
+      Text German=B&lättern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=5 86 280 132
+      Action=1
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+      Text=Example 2
+    end
+    item: Static
+      Rectangle=10 94 275 112
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=This mimics Wise's Directory Tree Control plus a "New Folder" button and ability to resize the dialog. The last directory level of the default installation directory is appended to the selected path.
+    end
+    item: Static
+      Rectangle=10 115 230 127
+      Action=3
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=11 117 229 126
+      Destination Dialog=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000010000000
+      Text=%MAINDIR2%
+    end
+    item: Push Button
+      Rectangle=233 114 275 128
+      Alternate=EXAMPLE2
+      Action=7
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Browse...
+      Text French=P&arcourir
+      Text German=B&lättern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=10 140 275 158
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Browsing for a computer on the network. Only computers can be selected.
+    end
+    item: Static
+      Rectangle=5 132 280 178
+      Action=1
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+      Text=Example 3
+    end
+    item: Static
+      Rectangle=10 161 230 173
+      Action=3
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=11 163 229 172
+      Destination Dialog=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000010000000
+      Text=%MAINDIR3%
+    end
+    item: Push Button
+      Rectangle=233 160 275 174
+      Alternate=EXAMPLE3
+      Action=7
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Browse...
+      Text French=P&arcourir
+      Text German=B&lättern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=5 178 280 224
+      Action=1
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+      Text=Example 4
+    end
+    item: Static
+      Rectangle=10 186 275 204
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Browsing a specific directory. The root of the directory tree is a user-defined directory (the Windows directory in this case). Uses the installation's icon in the dialog.
+    end
+    item: Static
+      Rectangle=10 207 230 219
+      Action=3
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=11 209 229 218
+      Destination Dialog=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000010000000
+      Text=%MAINDIR4%
+    end
+    item: Push Button
+      Rectangle=233 206 275 220
+      Alternate=EXAMPLE4
+      Action=7
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Browse...
+      Text French=P&arcourir
+      Text German=B&lättern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=5 230 280 231
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Remark
+      Text=General parameter list and variables used in this example for the BrowseForFolder function in shbffo.dll
+    end
+    item: Remark
+      Text=================================================================================
+    end
+    item: Remark
+      Text= 
+    end
+    item: Remark
+      Text=No.     Type                Variable                         Description
+    end
+    item: Remark
+      Text=-----      --------                ------------                          ----------------------
+    end
+    item: Remark
+      Text=1         long                                                       Needs to be set to "Constant with window handle"
+    end
+    item: Remark
+      Text=2         long                  HICON                          Handle to an icon to be displayed in the dialogs caption. If this is NULL, a default icon is used. See example 4.
+    end
+    item: Remark
+      Text=3         dword               BROWSEFLAGS          Single flag defining what can be selected in the browse dialog. Set to zero to permit anything to be selected.
+    end
+    item: Remark
+      Text=4         dword               UIFLAGS                      Combination of flags controling the appearance of the browse dialog. To combine multiple flags,
+    end
+    item: Remark
+      Text=                                                                         add up their values. Set to zero to not use any flags.
+    end
+    item: Remark
+      Text=5         string pointer     DIALOGTITLE             The text displayed in the dialog's caption. If this is NULL or an empty string,
+    end
+    item: Remark
+      Text=                                                                         a default (localized) dialog title is used.
+    end
+    item: Remark
+      Text=6         string pointer     DIALOGMESSAGE      Text to be displayed above the directory tree in the dialog. Can be NULL or an empty string.
+    end
+    item: Remark
+      Text=7         string pointer     NEWFOLDERTEXT     Caption of the "New Folder" button. This must not be NULL or an empty string if the BFF_NEWFOLDER flag
+    end
+    item: Remark
+      Text=                                                                          is set in parameter 4.
+    end
+    item: Remark
+      Text=8         long                  ROOT_CSIDL               Integer number (CSIDL) identifying a special shell folder that will be the root of the directory tree
+    end
+    item: Remark
+      Text=                                                                         (see ID_* variables in main script). Can be zero.
+    end
+    item: Remark
+      Text=9         string pointer     ROOT_DIRECTORY    Directory path name that will be the root of the directory tree. Ignored unless parameter 8 is zero.
+    end
+    item: Remark
+      Text=10       string pointer     MAINDIRx                     When calling the function, can contain a directory path name that, if it exists, will be the initial selection
+    end
+    item: Remark
+      Text=                                                                          in the directory tree. When the function returns, contains the (path) name of the object the user selected
+    end
+    item: Remark
+      Text=                                                                          in the dialog. This parameter cannot be NULL.
+    end
+    item: Remark
+      Text=11       dword pointer    OBJECT_TYPE             When the function returns, this variable receives an integer number describing the type of the object
+    end
+    item: Remark
+      Text=                                                                          returned in parameter 10. Set to NULL if you don't need this information.
+    end
+    item: Remark
+      Text= 
+    end
+    item: Remark
+      Text=                                                                          0 - Unknown type (indicates that the object does not exist)
+    end
+    item: Remark
+      Text=                                                                          1 - Directory
+    end
+    item: Remark
+      Text=                                                                          2 - File
+    end
+    item: Remark
+      Text=                                                                          3 - Computer name
+    end
+    item: Remark
+      Text=                                                                          4 - Network domain or workgroup name
+    end
+    item: Remark
+      Text=                                                                          5 - Network share
+    end
+    item: Remark
+      Text=                                                                          6 - Generic network resource
+    end
+    item: Remark
+      Text= 
+    end
+    item: Remark
+      Text=Return values
+    end
+    item: Remark
+      Text============
+    end
+    item: Remark
+      Text= 
+    end
+    item: Remark
+      Text=Returns one of the following integers:
+    end
+    item: Remark
+      Text= 
+    end
+    item: Remark
+      Text=0 - User clicked the OK button
+    end
+    item: Remark
+      Text=1 - User clicked the Cancel button
+    end
+    item: Remark
+      Text=2 - Severe error, could not initialize COM libraries
+    end
+    item: Remark
+      Text=3 - Severe error, could not obtain IMalloc interface
+    end
+    item: Remark
+      Text=4 - Severe error, could not obtain IShellFolder interface
+    end
+    item: Remark
+      Text=5 - Severe error, path name passed in parameter 10 is too long (260 characters max.)
+    end
+    item: Remark
+      Text=6 - Invalid parameter (either parameter 10 is NULL, or BFF_NEWFOLDER specified in parameter 4 and parameter 7 is NULL or an empty string)
+    end
+    item: Remark
+    end
+    item: Remark
+      Text=Example 1
+    end
+    item: If/While Statement
+      Variable=DLG_EVENT_TYPE
+      Value=EXAMPLE1
+    end
+    item: Set Variable
+      Variable=HICON
+      Value=0
+    end
+    item: Set Variable
+      Variable=BROWSEFLAGS
+      Value=BROWSEFSDIRS
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=UIFLAGS
+      Value=BFF_EDITBOX + BFF_EDITBOXRO + BFF_DONTAPPEND
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=DIALOGTITLE
+    end
+    item: Set Variable
+      Variable=DIALOGMESSAGE
+      Value=Please select a folder.
+    end
+    item: Set Variable
+      Variable=NEWFOLDERTEXT
+    end
+    item: Set Variable
+      Variable=ROOT_CSIDL
+      Value=0
+    end
+    item: Set Variable
+      Variable=ROOT_DIRECTORY
+    end
+    item: Call DLL Function
+      Pathname=%SHBFFO.DLL%
+      Function Name=BrowseForFolder
+      Argument List=23
+      Argument List=20HICON
+      Argument List=30BROWSEFLAGS
+      Argument List=30UIFLAGS
+      Argument List=40DIALOGTITLE
+      Argument List=40DIALOGMESSAGE
+      Argument List=40NEWFOLDERTEXT
+      Argument List=20ROOT_CSIDL
+      Argument List=40ROOT_DIRECTORY
+      Argument List=40MAINDIR1
+      Argument List=80OBJECT_TYPE
+      Return Variable=3RETURN
+      Flags=00100000
+    end
+    item: If/While Statement
+      Variable=RETURN
+      Value=2
+      Flags=00000110
+    end
+    item: Display Message
+      Title=BrowseForFolder
+      Text=Error %RETURN%.
+      Flags=00110000
+    end
+    item: End Block
+    end
+    item: End Block
+    end
+    item: Remark
+    end
+    item: Remark
+      Text=Example 2
+    end
+    item: If/While Statement
+      Variable=DLG_EVENT_TYPE
+      Value=EXAMPLE2
+    end
+    item: Set Variable
+      Variable=HICON
+      Value=0
+    end
+    item: Set Variable
+      Variable=BROWSEFLAGS
+      Value=BROWSEFSDIRS
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=UIFLAGS
+      Value=BFF_EDITBOX + BFF_NEWFOLDER + BFF_RESIZABLE + BFF_DONTEXPAND
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=DIALOGTITLE
+      Value=Select Destination Directory
+    end
+    item: Set Variable
+      Variable=DIALOGMESSAGE
+      Value=Setup will install %APPTITLE% in the following folder.
+    end
+    item: Set Variable
+      Variable=NEWFOLDERTEXT
+      Value=&New Folder...
+    end
+    item: Set Variable
+      Variable=ROOT_CSIDL
+      Value=0
+    end
+    item: Set Variable
+      Variable=ROOT_DIRECTORY
+    end
+    item: Call DLL Function
+      Pathname=%SHBFFO.DLL%
+      Function Name=BrowseForFolder
+      Argument List=23
+      Argument List=20HICON
+      Argument List=30BROWSEFLAGS
+      Argument List=30UIFLAGS
+      Argument List=40DIALOGTITLE
+      Argument List=40DIALOGMESSAGE
+      Argument List=40NEWFOLDERTEXT
+      Argument List=20ROOT_CSIDL
+      Argument List=40ROOT_DIRECTORY
+      Argument List=40MAINDIR2
+      Argument List=80OBJECT_TYPE
+      Return Variable=3RETURN
+      Flags=00100000
+    end
+    item: If/While Statement
+      Variable=RETURN
+      Value=2
+      Flags=00000110
+    end
+    item: Display Message
+      Title=BrowseForFolder
+      Text=Error %RETURN%.
+      Flags=00110000
+    end
+    item: End Block
+    end
+    item: End Block
+    end
+    item: Remark
+    end
+    item: Remark
+      Text=Example 3
+    end
+    item: If/While Statement
+      Variable=DLG_EVENT_TYPE
+      Value=EXAMPLE3
+    end
+    item: Set Variable
+      Variable=HICON
+      Value=0
+    end
+    item: Set Variable
+      Variable=BROWSEFLAGS
+      Value=BROWSECOMPUTER
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=UIFLAGS
+      Value=BFF_EDITBOX + BFF_RESIZABLE + BFF_DONTAPPEND
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=DIALOGTITLE
+    end
+    item: Set Variable
+      Variable=DIALOGMESSAGE
+      Value=Please select a computer on the network.
+    end
+    item: Set Variable
+      Variable=NEWFOLDERTEXT
+    end
+    item: Set Variable
+      Variable=ROOT_CSIDL
+      Value=ID_NETWORK
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=ROOT_DIRECTORY
+    end
+    item: Call DLL Function
+      Pathname=%SHBFFO.DLL%
+      Function Name=BrowseForFolder
+      Argument List=23
+      Argument List=20HICON
+      Argument List=30BROWSEFLAGS
+      Argument List=30UIFLAGS
+      Argument List=40DIALOGTITLE
+      Argument List=40DIALOGMESSAGE
+      Argument List=40NEWFOLDERTEXT
+      Argument List=20ROOT_CSIDL
+      Argument List=40ROOT_DIRECTORY
+      Argument List=40MAINDIR3
+      Argument List=80OBJECT_TYPE
+      Return Variable=3RETURN
+      Flags=00100000
+    end
+    item: If/While Statement
+      Variable=RETURN
+      Value=2
+      Flags=00000110
+    end
+    item: Display Message
+      Title=BrowseForFolder
+      Text=Error %RETURN%.
+      Flags=00110000
+    end
+    item: End Block
+    end
+    item: End Block
+    end
+    item: Remark
+    end
+    item: Remark
+      Text=Example 4
+    end
+    item: If/While Statement
+      Variable=DLG_EVENT_TYPE
+      Value=EXAMPLE4
+    end
+    item: Remark
+      Text============= The following retrieves a handle to the icon of our installation ============
+    end
+    item: Get System Information
+      Variable=INSTEXE
+      Flags=00001101
+    end
+    item: Call DLL Function
+      Pathname=%SYS32%\KERNEL32.DLL
+      Function Name=GetModuleHandleA
+      Argument List=42
+      Return Variable=2HINSTANCE
+      Flags=00100000
+    end
+    item: Call DLL Function
+      Pathname=%SYS32%\SHELL32.DLL
+      Function Name=ExtractIconExA
+      Argument List=40INSTEXE
+      Argument List=310
+      Argument List=72
+      Argument List=70HICON
+      Argument List=311
+      Return Variable=2
+      Flags=00100000
+    end
+    item: Remark
+      Text==========================================================================
+    end
+    item: Set Variable
+      Variable=BROWSEFLAGS
+      Value=0
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=UIFLAGS
+      Value=BFF_EDITBOX + BFF_NEWFOLDER + BFF_RESIZABLE + BFF_DONTAPPEND
+      Flags=00100000
+    end
+    item: Set Variable
+      Variable=DIALOGTITLE
+    end
+    item: Set Variable
+      Variable=DIALOGMESSAGE
+    end
+    item: Set Variable
+      Variable=NEWFOLDERTEXT
+      Value=&New Folder...
+    end
+    item: Set Variable
+      Variable=ROOT_CSIDL
+      Value=0
+      Flags=00100000
+    end
+    item: Remark
+      Text=You can also set this to a computer name to browse the network shares of a specific
+    end
+    item: Remark
+      Text=machine on the network. Make sure you use two leading backslashes in the
+    end
+    item: Remark
+      Text=computer name, e.g. \\Server.
+    end
+    item: Set Variable
+      Variable=ROOT_DIRECTORY
+      Value=%WIN%
+    end
+    item: Call DLL Function
+      Pathname=%SHBFFO.DLL%
+      Function Name=BrowseForFolder
+      Argument List=23
+      Argument List=20HICON
+      Argument List=30BROWSEFLAGS
+      Argument List=30UIFLAGS
+      Argument List=40DIALOGTITLE
+      Argument List=40DIALOGMESSAGE
+      Argument List=40NEWFOLDERTEXT
+      Argument List=20ROOT_CSIDL
+      Argument List=40ROOT_DIRECTORY
+      Argument List=40MAINDIR4
+      Argument List=80OBJECT_TYPE
+      Return Variable=3RETURN
+      Flags=00100000
+    end
+    item: If/While Statement
+      Variable=RETURN
+      Value=2
+      Flags=00000110
+    end
+    item: Display Message
+      Title=BrowseForFolder
+      Text=Error %RETURN%.
+      Flags=00110000
+    end
+    item: End Block
+    end
+    item: Remark
+      Text============= We must destroy the icon handle retrieved above ============
+    end
+    item: If/While Statement
+      Variable=HICON
+      Value=0
+      Flags=00000001
+    end
+    item: Call DLL Function
+      Pathname=%SYS32%\USER32.DLL
+      Function Name=DestroyIcon
+      Argument List=20HICON
+      Return Variable=3
+      Flags=00100000
+    end
+    item: End Block
+    end
+    item: Remark
+      Text=================================================================
+    end
+    item: End Block
+    end
+  end
+end
+item: End Block
+end

@@ -1,0 +1,13 @@
+/* Wedit generated resource file */
+#include <windows.h>
+#include "oracleres.h"
+
+101 BITMAP oracle.bmp
+
+IDD_MAINDIALOG DIALOG 7, 20, 265, 270
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_DLGFRAME | WS_SYSMENU
+FONT 6, "Arial Black"
+BEGIN
+    CTEXT           "- ASK  then TAP the BALL to GUESS -", IDTEXT, 64, 124,
+                    141, 11, SS_SUNKEN | WS_BORDER
+END

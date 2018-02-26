@@ -1,0 +1,659 @@
+Document Type: WSE
+item: Global
+  Version=9.01
+  Title=FileOperation
+  Flags=01000100
+  Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=9
+  Progress Bar DLL=%_WISE_%\Progress\WIZ%_EXE_OS_TYPE_%.DLL
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010010110000001000
+  Message Font=MS Sans Serif
+  Font Size=8
+  Pages Modified=00100000001000100000000000000000
+  Extra Pages=00000000000000000000000000110000
+  Disk Label=Default
+  Disk Filename=SETUP
+  Patch Flags=0000000000000001
+  Patch Threshold=85
+  Patch Memory=4000
+  MIF PDF Version=1.0
+  MIF SMS Version=2.0
+  FTP Cluster Size=20
+  Dialogs Version=7
+  Crystal Format=10111100101100000010001001001001
+  Step View=&Properties
+  Variable Name1=_SYS_
+  Variable Default1=C:\WINDOWS\SYSTEM
+  Variable Flags1=00001000
+  Variable Name2=_WIN_
+  Variable Default2=C:\WINDOWS
+  Variable Flags2=00001000
+  Variable Name3=_WISE_
+  Variable Default3=C:\PROGRAMME\WISE INSTALLATION SYSTEM
+  Variable Flags3=00001000
+  Variable Name4=_INIT_WINDOW_
+  Variable Default4=HIDE
+end
+item: Remark
+  Text=Script:      fileoperation.wse
+end
+item: Remark
+  Text=Author:     Ralf Buschmann
+end
+item: Remark
+  Text=Contact:   ralf@backmagic.de
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Purpose:   Sample script demonstrating how to use the FileOperation function in shbffo.dll
+end
+item: Remark
+  Text=                 This function is especially useful for copying/moving/deleting files in a custom dialog script.
+end
+item: Remark
+  Text=                 For information on how to call a DLL in a custom dialog script (when clicking a push button),
+end
+item: Remark
+  Text=                 see the browseforfolder.wse sample script.
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Requires:  shbffo.dll, Wise InstallBuilder/InstallMaster 7.x or higher
+end
+item: Remark
+  Text=Date:         29/10/2001
+end
+item: Remark
+  Text=Version:     2.0
+end
+item: Remark
+end
+item: Remark
+end
+item: Remark
+  Text================== Constants controling action of FileOperation =================
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=When passed to FileOperation, these constants determine the actual operation of
+end
+item: Remark
+  Text=the function. These flags are used in parameter 3 of the FileOperation function.
+end
+item: Remark
+end
+item: Remark
+  Text=Moves files.
+end
+item: Set Variable
+  Variable=FO_MOVE
+  Value=1
+end
+item: Remark
+  Text=Copies files.
+end
+item: Set Variable
+  Variable=FO_COPY
+  Value=2
+end
+item: Remark
+  Text=Deletes files.
+end
+item: Set Variable
+  Variable=FO_DELETE
+  Value=3
+end
+item: Remark
+  Text========================================================================
+end
+item: Remark
+end
+item: Remark
+  Text======================================= Constants driving various options of FileOperation =========================================
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=These flags are used in parameter 4 of the FileOperation function.
+end
+item: Remark
+end
+item: Remark
+  Text=Indicates that the target of the file operation specifies multiple destination files (one for each source file, CR/LF separated)
+end
+item: Remark
+  Text=rather than one directory where all source files are to be deposited.
+end
+item: Set Variable
+  Variable=FO_MULTIFILES
+  Value=1
+end
+item: Remark
+  Text=Does not display a progress dialog box.
+end
+item: Set Variable
+  Variable=FO_SILENT
+  Value=4
+end
+item: Remark
+  Text=Gives the file being operated on a new name (such as "Copy #1 of...") in a move or copy operation if a file of the target name already exists.
+end
+item: Set Variable
+  Variable=FO_RENAME
+  Value=8
+end
+item: Remark
+  Text=Responds with "yes to all" for any dialog box that is displayed during the file operation ("unattended" mode).
+end
+item: Set Variable
+  Variable=FO_NOCONFIRM
+  Value=16
+end
+item: Remark
+  Text=Preserve undo information, if possible. For instance, when using FO_DELETE, this moves the files into the Recycle Bin rather than actually deleting them.
+end
+item: Set Variable
+  Variable=FO_ALLOWUNDO
+  Value=64
+end
+item: Remark
+  Text=Performs the operation only on files if a wildcard filename (*.*) is specified (do not recurse into subdirectories)
+end
+item: Set Variable
+  Variable=FO_FILESONLY
+  Value=128
+end
+item: Remark
+  Text=Does not confirm the creation of a new directory if the operation requires one to be created.
+end
+item: Set Variable
+  Variable=FO_AUTOMKDIR
+  Value=512
+end
+item: Remark
+  Text=Do not display a user interface if an error occurs.
+end
+item: Set Variable
+  Variable=FO_NOERRORUI 
+  Value=1024
+end
+item: Remark
+  Text==========================================================================================================================
+end
+item: Remark
+end
+item: Remark
+  Text=A note on multi-language support: any dialogs or message boxes displayed by FileOperation are automatically
+end
+item: Remark
+  Text=localized in the Windows system language.
+end
+item: Remark
+end
+item: Remark
+  Text=General parameter list and variables used in this example for the FileOperation function in shbffo.dll
+end
+item: Remark
+  Text==============================================================================
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=No.     Type                Variable                         Description
+end
+item: Remark
+  Text=-----      --------                ------------                          ----------------------
+end
+item: Remark
+  Text=1         long                                                       Needs to be set to "Constant with window handle"
+end
+item: Remark
+  Text=2         string pointer     FO_SOURCE               The source directory/files. You can use wildcards and multiple source directories/files in a CR/LF separated list.
+end
+item: Remark
+  Text=                                                                         CR/LF is defined in variable CRLF in Wise.
+end
+item: Remark
+  Text=3         string pointer     FO_TARGET                The destination directory/file. You can use multiple destination directories/files in a CR/LF separated list.
+end
+item: Remark
+  Text=                                                                          When using multiple destination directories/files, you must include the FO_MULTIFILES flag in parameter 5
+end
+item: Remark
+  Text=                                                                          and there must be a corresponding source directory/file in paramater 1 for each destination directory/file.
+end
+item: Remark
+  Text=4         dword                FO_ACTION                 Single flag determining the actual operation of the FileOperation function (copy, move or delete).
+end
+item: Remark
+  Text=5         word                  FO_FLAGS                   Combination of flags driving various options of FileOperation. To combine multiple flags, add up their values.
+end
+item: Remark
+  Text=                                                                          Set to zero to not use any flags.
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Return values
+end
+item: Remark
+  Text============
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Returns one of the following integers:
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=0 - Success
+end
+item: Remark
+  Text=1 - The system aborted the operation
+end
+item: Remark
+  Text=2 - The user aborted the operation
+end
+item: Remark
+  Text=3 - Severe error, the source and destination file lists are not consistent/invalid
+end
+item: Remark
+  Text=4 - Severe error, out of memory
+end
+item: Remark
+end
+item: Remark
+  Text=Install DLL to a temporary location
+end
+item: Get Temporary Filename
+  Variable=SHBFFO.DLL
+end
+item: Set Variable
+  Variable=SHBFFO.DLL
+  Value=%TEMP%\%SHBFFO.DLL%
+end
+item: Check Disk Space
+end
+item: Install File
+  Source=.\shbffo.dll
+  Destination=%SHBFFO.DLL%
+  Flags=0000000010100010
+end
+item: Remark
+end
+item: Remark
+  Text=Example 1
+end
+item: Remark
+  Text=----------------
+end
+item: Remark
+  Text=Copying all *.txt files, recursively, in the Windows directory to a subdirectory in the TEMP directory.
+end
+item: Remark
+  Text= 
+end
+item: Remark
+  Text=Let Wise find all *.txt files in %WIN%, then pass the CR/LF separated file list generated by
+end
+item: Remark
+  Text="Search for Files" directly to FileOperation.
+end
+item: Display Message
+  Title=Example 1
+  Text=Copy all *.txt files, recursively, in %WIN% to %TEMP%\TXT ?
+  Flags=00001101
+end
+item: Search for File
+  Variable=FO_SOURCE
+  Pathname List=%WIN%\*.txt
+  Description=Searching files, please wait...
+  Flags=10000110
+end
+item: Set Variable
+  Variable=FO_TARGET
+  Value=%TEMP%\TXT
+end
+item: Set Variable
+  Variable=FO_ACTION
+  Value=FO_COPY
+  Flags=00100000
+end
+item: Set Variable
+  Variable=FO_FLAGS
+  Value=FO_RENAME
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SHBFFO.DLL%
+  Function Name=FileOperation
+  Argument List=23
+  Argument List=40FO_SOURCE
+  Argument List=40FO_TARGET
+  Argument List=30FO_ACTION
+  Argument List=10FO_FLAGS
+  Return Variable=3RETURN
+  Flags=00100000
+end
+item: If/While Statement
+  Variable=RETURN
+  Value=0
+end
+item: Display Message
+  Title=FileOperation
+  Text=Copy completed successfully.
+  Flags=00100100
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=1
+end
+item: Display Message
+  Title=FileOperation
+  Text=Operation aborted by system.
+  Flags=00101000
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=2
+end
+item: Display Message
+  Title=FileOperation
+  Text=Aborted by user request.
+  Flags=00100100
+end
+item: Else Statement
+end
+item: Display Message
+  Title=FileOperation
+  Text=Error %RETURN%
+  Flags=00110000
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Example 2
+end
+item: Remark
+  Text=----------------
+end
+item: Remark
+  Text=Copying all files, non-recursively, in the root directory of drive C: to a subdirectory in the TEMP directory.
+end
+item: Display Message
+  Title=Example 2
+  Text=Copy all files, non-recursively, in the root directory of drive C: to %TEMP%\C_ROOT ?
+  Flags=00001101
+end
+item: Set Variable
+  Variable=FO_SOURCE
+  Value=C:\*.*
+end
+item: Set Variable
+  Variable=FO_TARGET
+  Value=%TEMP%\C_ROOT
+end
+item: Set Variable
+  Variable=FO_ACTION
+  Value=FO_COPY
+  Flags=00100000
+end
+item: Remark
+  Text=Don't recurse and create directory automatically.
+end
+item: Set Variable
+  Variable=FO_FLAGS
+  Value=FO_FILESONLY + FO_AUTOMKDIR
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SHBFFO.DLL%
+  Function Name=FileOperation
+  Argument List=23
+  Argument List=40FO_SOURCE
+  Argument List=40FO_TARGET
+  Argument List=30FO_ACTION
+  Argument List=10FO_FLAGS
+  Return Variable=3RETURN
+  Flags=00100000
+end
+item: If/While Statement
+  Variable=RETURN
+  Value=0
+end
+item: Display Message
+  Title=FileOperation
+  Text=Copy completed successfully.
+  Flags=00100100
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=1
+end
+item: Display Message
+  Title=FileOperation
+  Text=Operation aborted by system.
+  Flags=00101000
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=2
+end
+item: Display Message
+  Title=FileOperation
+  Text=Aborted by user request.
+  Flags=00100100
+end
+item: Else Statement
+end
+item: Display Message
+  Title=FileOperation
+  Text=Error %RETURN%
+  Flags=00110000
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Example 3
+end
+item: Remark
+  Text=----------------
+end
+item: Remark
+  Text=Copying a directory and a single file to a new directory and new file.
+end
+item: Display Message
+  Title=Example 3
+  Text=Copy
+  Text=
+  Text=%_WISE_%
+  Text=and
+  Text=%WIN%\win.ini
+  Text=
+  Text=to %TEMP%\Example 3 ?
+  Flags=00001101
+end
+item: Remark
+  Text=Multiple source/destination files/directories must be CR/LF separated.
+end
+item: Set Variable
+  Variable=FO_SOURCE
+  Value=%_WISE_%%CRLF%%WIN%\win.ini
+end
+item: Set Variable
+  Variable=FO_TARGET
+  Value=%TEMP%\Example 3\Wise Directory%CRLF%%TEMP%\Example 3\win.ini
+end
+item: Set Variable
+  Variable=FO_ACTION
+  Value=FO_COPY
+  Flags=00100000
+end
+item: Remark
+  Text=Specify multiple destination files, create directory automatically and respond "yes to all".
+end
+item: Set Variable
+  Variable=FO_FLAGS
+  Value=FO_MULTIFILES + FO_AUTOMKDIR + FO_NOCONFIRM
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SHBFFO.DLL%
+  Function Name=FileOperation
+  Argument List=23
+  Argument List=40FO_SOURCE
+  Argument List=40FO_TARGET
+  Argument List=30FO_ACTION
+  Argument List=10FO_FLAGS
+  Return Variable=3RETURN
+  Flags=00100000
+end
+item: If/While Statement
+  Variable=RETURN
+  Value=0
+end
+item: Display Message
+  Title=FileOperation
+  Text=Copy completed successfully.
+  Flags=00100100
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=1
+end
+item: Display Message
+  Title=FileOperation
+  Text=Operation aborted by system.
+  Flags=00101000
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=2
+end
+item: Display Message
+  Title=FileOperation
+  Text=Aborted by user request.
+  Flags=00100100
+end
+item: Else Statement
+end
+item: Display Message
+  Title=FileOperation
+  Text=Error %RETURN%
+  Flags=00110000
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=Example 4
+end
+item: Remark
+  Text=----------------
+end
+item: Remark
+  Text=Moving all files and directories generated in the TEMP directory by previous examples to the Recycle Bin.
+end
+item: Display Message
+  Title=Example 4
+  Text=Move all files and directories generated in %TEMP% by previous examples to the Recycle Bin?
+  Flags=00001101
+end
+item: Set Variable
+  Variable=FO_SOURCE
+  Value=%TEMP%\TXT%CRLF%%TEMP%\C_ROOT%CRLF%%TEMP%\Example 3
+end
+item: Remark
+  Text=Use empty target when deleting files.
+end
+item: Set Variable
+  Variable=FO_TARGET
+end
+item: Set Variable
+  Variable=FO_ACTION
+  Value=FO_DELETE
+  Flags=00100000
+end
+item: Remark
+  Text=FO_ALLOWUNDO ensures files are moved to the Recycle Bin rather than being deleted.
+end
+item: Set Variable
+  Variable=FO_FLAGS
+  Value=FO_ALLOWUNDO
+  Flags=00100000
+end
+item: Call DLL Function
+  Pathname=%SHBFFO.DLL%
+  Function Name=FileOperation
+  Argument List=23
+  Argument List=40FO_SOURCE
+  Argument List=40FO_TARGET
+  Argument List=30FO_ACTION
+  Argument List=10FO_FLAGS
+  Return Variable=3RETURN
+  Flags=00100000
+end
+item: If/While Statement
+  Variable=RETURN
+  Value=0
+end
+item: Display Message
+  Title=FileOperation
+  Text=Copy completed successfully.
+  Flags=00100100
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=1
+end
+item: Display Message
+  Title=FileOperation
+  Text=Operation aborted by system.
+  Flags=00101000
+end
+item: ElseIf Statement
+  Variable=RETURN
+  Value=2
+end
+item: Display Message
+  Title=FileOperation
+  Text=Aborted by user request.
+  Flags=00100100
+end
+item: Else Statement
+end
+item: Display Message
+  Title=FileOperation
+  Text=Error %RETURN%
+  Flags=00110000
+end
+item: End Block
+end
+item: End Block
+end

@@ -1,0 +1,26 @@
+/////////////////////////////////////////////////////////////////////////
+//Please read ..\readme.txt before opening this resource in Weditres!!!//
+/////////////////////////////////////////////////////////////////////////
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#ifndef DS_SHELLFONT
+#define DS_SHELLFONT (DS_SETFONT | DS_FIXEDSYS)
+#endif
+#include "resource.h"
+
+ID_ICON_FOLDER ICON "folder.ico"
+ID_ICON_COMPUTER ICON "computer.ico"
+ID_ICON_PRINTER ICON "printer.ico"
+
+IDD_MAINDIALOG DIALOGEX 12, 20, 266, 45
+STYLE DS_MODALFRAME | DS_SHELLFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", FW_DONTCARE, FALSE
+BEGIN
+    LTEXT           "", IDD_STATIC, 7, 7, 125, 12, SS_SUNKEN
+    EDITTEXT        IDD_EDIT, 134, 7, 125, 12, ES_AUTOHSCROLL, WS_EX_CLIENTEDGE
+    PUSHBUTTON      "OK", IDOK, 134, 25, 40, 15, BS_DEFPUSHBUTTON
+    PUSHBUTTON      "Cancel", IDCANCEL, 179, 25, 50, 15
+END
+
+#include "version.rc"

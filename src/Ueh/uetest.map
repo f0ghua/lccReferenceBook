@@ -1,0 +1,408 @@
+output   input     virtual
+section  section   address    tsize
+.text               401000  1a00  1884 
+
+         .text      401000   29c   29c  c:\lcc\lib\lcccrt0s.obj
+                    40109a              __except_handler3
+                    401219              _mainCRTStartup
+                    401294              _NtCurrentTeb
+         .text      40129c   190   190  uetest.obj
+                    401386              _FloatSaveRegisters
+                    4012e1              _PrivilegedInstruction
+                    4012b9              _StackOverflow
+                    4012e4              _SignedIntegerDivideByZero
+                    401352              _ArrayBoundsExceeded
+                    4012dc              _BreakPoint
+                    4012de              _IllegalInstruction
+                    4013c9              _f2
+                    40130e              _AccessViolationInK32
+                    40129c              _AccessViolation
+                    401301              _AccessViolationInCRT
+                    401344              _AccessViolationInGdi32
+                    40131b              _AccessViolationInAdvapi32
+                    401335              _AccessViolationInUser32
+                    4013ed              _f1
+                    40137e              _FloatDivideByZero
+                    4013a5              _f3
+                    40140e              _main
+                    401396              _f4
+                    401375              _IntegerOverflow
+                    4012f2              _UnsignedIntegerDivideByZero
+         .text      40142c  1294  1294  ueh.obj
+                    40257b              _CatchAll@4
+                    4025bf              _InitializeExceptionHandler@0
+                    401d35              _DumpStackLimits@0
+                    401fc1              _GetFunctionAddress@4
+         .text      4026c0    20    20  [c:\lcc\lib\libc.lib] stack.obj
+                    4026c0              __stackprobe
+         .text      4026e0     c     c  [c:\lcc\lib\kernel32.lib] 130.obj
+                    4026e0              _ExitProcess@4
+         .text      4026ec     c     c  [c:\lcc\lib\kernel32.lib] 176.obj
+                    4026ec              _FormatMessageA@28
+         .text      4026f8     c     c  [c:\lcc\lib\kernel32.lib] 267.obj
+                    4026f8              _GetModuleFileNameA@12
+         .text      402704     c     c  [c:\lcc\lib\kernel32.lib] 28.obj
+                    402704              _CloseHandle@4
+         .text      402710     c     c  [c:\lcc\lib\kernel32.lib] 320.obj
+                    402710              _GetSystemDirectoryA@8
+         .text      40271c     c     c  [c:\lcc\lib\kernel32.lib] 322.obj
+                    40271c              _GetSystemInfo@4
+         .text      402728     c     c  [c:\lcc\lib\kernel32.lib] 324.obj
+                    402728              _GetSystemTime@4
+         .text      402734     c     c  [c:\lcc\lib\kernel32.lib] 345.obj
+                    402734              _GetTimeZoneInformation@4
+         .text      402740     c     c  [c:\lcc\lib\kernel32.lib] 350.obj
+                    402740              _GetVersionExA@4
+         .text      40274c     c     c  [c:\lcc\lib\kernel32.lib] 412.obj
+                    40274c              _IsBadWritePtr@8
+         .text      402758     c     c  [c:\lcc\lib\kernel32.lib] 50.obj
+                    402758              _CreateFileA@28
+         .text      402764     c     c  [c:\lcc\lib\kernel32.lib] 527.obj
+                    402764              _RtlUnwind@16
+         .text      402770     c     c  [c:\lcc\lib\kernel32.lib] 528.obj
+                    402770              _RtlZeroMemory@8
+         .text      40277c     c     c  [c:\lcc\lib\kernel32.lib] 565.obj
+                    40277c              _SetErrorMode@4
+         .text      402788     c     c  [c:\lcc\lib\kernel32.lib] 571.obj
+                    402788              _SetFilePointer@16
+         .text      402794     c     c  [c:\lcc\lib\kernel32.lib] 604.obj
+                    402794              _SetUnhandledExceptionFilter@4
+         .text      4027a0     c     c  [c:\lcc\lib\kernel32.lib] 653.obj
+                    4027a0              _VirtualQuery@12
+         .text      4027ac     c     c  [c:\lcc\lib\kernel32.lib] 675.obj
+                    4027ac              _WriteFile@20
+         .text      4027b8     c     c  [c:\lcc\lib\kernel32.lib] 705.obj
+                    4027b8              _lstrcmpiA@8
+         .text      4027c4     c     c  [c:\lcc\lib\user32.lib] 15.obj
+                    4027c4              _GetClassNameA@12
+         .text      4027d0     c     c  [c:\lcc\lib\user32.lib] 309.obj
+                    4027d0              _MessageBoxA@16
+         .text      4027dc     c     c  [c:\lcc\lib\gdi32.lib] 272.obj
+                    4027dc              _GetCharWidthA@16
+         .text      4027e8     c     c  [c:\lcc\lib\advapi32.lib] 136.obj
+                    4027e8              _GetUserNameA@8
+         .text      4027f4     c     c  [c:\lcc\lib\advapi32.lib] 373.obj
+                    4027f4              _RegCloseKey@4
+         .text      402800     c     c  [c:\lcc\lib\advapi32.lib] 378.obj
+                    402800              _RegOpenKeyExA@20
+         .text      40280c     c     c  [c:\lcc\lib\advapi32.lib] 389.obj
+                    40280c              _RegQueryValueExA@24
+         .text      402818     c     c  [c:\lcc\lib\crtdll.lib] 25.obj
+                    402818              __GetMainArgs
+         .text      402824     c     c  [c:\lcc\lib\crtdll.lib] 388.obj
+                    402824              __snprintf
+         .text      402830     c     c  [c:\lcc\lib\crtdll.lib] 476.obj
+                    402830              __vsnprintf
+         .text      40283c     c     c  [c:\lcc\lib\crtdll.lib] 522.obj
+                    40283c              _exit
+         .text      402848     c     c  [c:\lcc\lib\crtdll.lib] 608.obj
+                    402848              _raise
+         .text      402854     c     c  [c:\lcc\lib\crtdll.lib] 618.obj
+                    402854              _signal
+         .text      402860     c     c  [c:\lcc\lib\crtdll.lib] 629.obj
+                    402860              _strcpy
+         .text      40286c     c     c  [c:\lcc\lib\crtdll.lib] 633.obj
+                    40286c              _strlen
+         .text      402878     c     c  [c:\lcc\lib\crtdll.lib] 638.obj
+                    402878              _strrchr
+
+.bss                403000     0     0 
+
+
+.data               403000  1e00  1ce8 
+
+         .data      403000    94    94  c:\lcc\lib\lcccrt0s.obj
+                    403014              __InitialStack
+                    403028              __environ
+                    403024              ___argv
+                    403000              __bss_base__
+                    403018              __lastKnownGoodEBP
+                    403004              __bss_end__
+                    403090              __CurrentContext
+                    403030              __ExceptionCode
+                    403008              __fmode
+                    40302c              __plccStackTrace
+                    403034              __ExceptionPointers
+                    40300c              __ShadowStack
+                    40308c              __CurrentException
+                    403020              ___argc
+         .data      403094     8     8  uetest.obj
+         .data      40309c  1c4c  1c4c  ueh.obj
+
+.idata              405000   600   538 
+
+         .idata$2   405000    14    14  [c:\lcc\lib\kernel32.lib] 1.obj
+                    405000              $hkernel
+         .idata$2   405014    14    14  [c:\lcc\lib\user32.lib] 1.obj
+                    405014              $huser32
+         .idata$2   405028    14    14  [c:\lcc\lib\gdi32.lib] 1.obj
+                    405028              $hgdi32
+         .idata$2   40503c    14    14  [c:\lcc\lib\advapi32.lib] 1.obj
+                    40503c              $hadvapi
+         .idata$2   405050    14    14  [c:\lcc\lib\crtdll.lib] 1.obj
+                    405050              $hcrtdll
+
+         .idata$3   405064    60    60  c:\lcc\lib\lcccrt0s.obj
+
+         .idata$4   4050c4     4     4  [c:\lcc\lib\kernel32.lib] 0.obj
+         .idata$4   4050c8     4     4  [c:\lcc\lib\kernel32.lib] 1.obj
+         .idata$4   4050cc     4     4  [c:\lcc\lib\kernel32.lib] 130.obj
+         .idata$4   4050d0     4     4  [c:\lcc\lib\kernel32.lib] 176.obj
+         .idata$4   4050d4     4     4  [c:\lcc\lib\kernel32.lib] 267.obj
+         .idata$4   4050d8     4     4  [c:\lcc\lib\kernel32.lib] 28.obj
+         .idata$4   4050dc     4     4  [c:\lcc\lib\kernel32.lib] 320.obj
+         .idata$4   4050e0     4     4  [c:\lcc\lib\kernel32.lib] 322.obj
+         .idata$4   4050e4     4     4  [c:\lcc\lib\kernel32.lib] 324.obj
+         .idata$4   4050e8     4     4  [c:\lcc\lib\kernel32.lib] 345.obj
+         .idata$4   4050ec     4     4  [c:\lcc\lib\kernel32.lib] 350.obj
+         .idata$4   4050f0     4     4  [c:\lcc\lib\kernel32.lib] 412.obj
+         .idata$4   4050f4     4     4  [c:\lcc\lib\kernel32.lib] 50.obj
+         .idata$4   4050f8     4     4  [c:\lcc\lib\kernel32.lib] 527.obj
+         .idata$4   4050fc     4     4  [c:\lcc\lib\kernel32.lib] 528.obj
+         .idata$4   405100     4     4  [c:\lcc\lib\kernel32.lib] 565.obj
+         .idata$4   405104     4     4  [c:\lcc\lib\kernel32.lib] 571.obj
+         .idata$4   405108     4     4  [c:\lcc\lib\kernel32.lib] 604.obj
+         .idata$4   40510c     4     4  [c:\lcc\lib\kernel32.lib] 653.obj
+         .idata$4   405110     4     4  [c:\lcc\lib\kernel32.lib] 675.obj
+         .idata$4   405114     4     4  [c:\lcc\lib\kernel32.lib] 705.obj
+         .idata$4   405118     4     4  [c:\lcc\lib\user32.lib] 0.obj
+         .idata$4   40511c     4     4  [c:\lcc\lib\user32.lib] 1.obj
+         .idata$4   405120     4     4  [c:\lcc\lib\user32.lib] 15.obj
+         .idata$4   405124     4     4  [c:\lcc\lib\user32.lib] 309.obj
+         .idata$4   405128     4     4  [c:\lcc\lib\gdi32.lib] 0.obj
+         .idata$4   40512c     4     4  [c:\lcc\lib\gdi32.lib] 1.obj
+         .idata$4   405130     4     4  [c:\lcc\lib\gdi32.lib] 272.obj
+         .idata$4   405134     4     4  [c:\lcc\lib\advapi32.lib] 0.obj
+         .idata$4   405138     4     4  [c:\lcc\lib\advapi32.lib] 1.obj
+         .idata$4   40513c     4     4  [c:\lcc\lib\advapi32.lib] 136.obj
+         .idata$4   405140     4     4  [c:\lcc\lib\advapi32.lib] 373.obj
+         .idata$4   405144     4     4  [c:\lcc\lib\advapi32.lib] 378.obj
+         .idata$4   405148     4     4  [c:\lcc\lib\advapi32.lib] 389.obj
+         .idata$4   40514c     4     4  [c:\lcc\lib\crtdll.lib] 0.obj
+         .idata$4   405150     4     4  [c:\lcc\lib\crtdll.lib] 1.obj
+         .idata$4   405154     4     4  [c:\lcc\lib\crtdll.lib] 25.obj
+         .idata$4   405158     4     4  [c:\lcc\lib\crtdll.lib] 388.obj
+         .idata$4   40515c     4     4  [c:\lcc\lib\crtdll.lib] 476.obj
+         .idata$4   405160     4     4  [c:\lcc\lib\crtdll.lib] 522.obj
+         .idata$4   405164     4     4  [c:\lcc\lib\crtdll.lib] 608.obj
+         .idata$4   405168     4     4  [c:\lcc\lib\crtdll.lib] 618.obj
+         .idata$4   40516c     4     4  [c:\lcc\lib\crtdll.lib] 629.obj
+         .idata$4   405170     4     4  [c:\lcc\lib\crtdll.lib] 633.obj
+         .idata$4   405174     4     4  [c:\lcc\lib\crtdll.lib] 638.obj
+
+         .idata$5   405178     4     4  [c:\lcc\lib\kernel32.lib] 0.obj
+         .idata$5   40517c     4     4  [c:\lcc\lib\kernel32.lib] 1.obj
+         .idata$5   405180     4     4  [c:\lcc\lib\kernel32.lib] 130.obj
+                    405180              __imp__ExitProcess@4
+         .idata$5   405184     4     4  [c:\lcc\lib\kernel32.lib] 176.obj
+                    405184              __imp__FormatMessageA@28
+         .idata$5   405188     4     4  [c:\lcc\lib\kernel32.lib] 267.obj
+                    405188              __imp__GetModuleFileNameA@12
+         .idata$5   40518c     4     4  [c:\lcc\lib\kernel32.lib] 28.obj
+                    40518c              __imp__CloseHandle@4
+         .idata$5   405190     4     4  [c:\lcc\lib\kernel32.lib] 320.obj
+                    405190              __imp__GetSystemDirectoryA@8
+         .idata$5   405194     4     4  [c:\lcc\lib\kernel32.lib] 322.obj
+                    405194              __imp__GetSystemInfo@4
+         .idata$5   405198     4     4  [c:\lcc\lib\kernel32.lib] 324.obj
+                    405198              __imp__GetSystemTime@4
+         .idata$5   40519c     4     4  [c:\lcc\lib\kernel32.lib] 345.obj
+                    40519c              __imp__GetTimeZoneInformation@4
+         .idata$5   4051a0     4     4  [c:\lcc\lib\kernel32.lib] 350.obj
+                    4051a0              __imp__GetVersionExA@4
+         .idata$5   4051a4     4     4  [c:\lcc\lib\kernel32.lib] 412.obj
+                    4051a4              __imp__IsBadWritePtr@8
+         .idata$5   4051a8     4     4  [c:\lcc\lib\kernel32.lib] 50.obj
+                    4051a8              __imp__CreateFileA@28
+         .idata$5   4051ac     4     4  [c:\lcc\lib\kernel32.lib] 527.obj
+                    4051ac              __imp__RtlUnwind@16
+         .idata$5   4051b0     4     4  [c:\lcc\lib\kernel32.lib] 528.obj
+                    4051b0              __imp__RtlZeroMemory@8
+         .idata$5   4051b4     4     4  [c:\lcc\lib\kernel32.lib] 565.obj
+                    4051b4              __imp__SetErrorMode@4
+         .idata$5   4051b8     4     4  [c:\lcc\lib\kernel32.lib] 571.obj
+                    4051b8              __imp__SetFilePointer@16
+         .idata$5   4051bc     4     4  [c:\lcc\lib\kernel32.lib] 604.obj
+                    4051bc              __imp__SetUnhandledExceptionFilter@4
+         .idata$5   4051c0     4     4  [c:\lcc\lib\kernel32.lib] 653.obj
+                    4051c0              __imp__VirtualQuery@12
+         .idata$5   4051c4     4     4  [c:\lcc\lib\kernel32.lib] 675.obj
+                    4051c4              __imp__WriteFile@20
+         .idata$5   4051c8     4     4  [c:\lcc\lib\kernel32.lib] 705.obj
+                    4051c8              __imp__lstrcmpiA@8
+         .idata$5   4051cc     4     4  [c:\lcc\lib\user32.lib] 0.obj
+         .idata$5   4051d0     4     4  [c:\lcc\lib\user32.lib] 1.obj
+         .idata$5   4051d4     4     4  [c:\lcc\lib\user32.lib] 15.obj
+                    4051d4              __imp__GetClassNameA@12
+         .idata$5   4051d8     4     4  [c:\lcc\lib\user32.lib] 309.obj
+                    4051d8              __imp__MessageBoxA@16
+         .idata$5   4051dc     4     4  [c:\lcc\lib\gdi32.lib] 0.obj
+         .idata$5   4051e0     4     4  [c:\lcc\lib\gdi32.lib] 1.obj
+         .idata$5   4051e4     4     4  [c:\lcc\lib\gdi32.lib] 272.obj
+                    4051e4              __imp__GetCharWidthA@16
+         .idata$5   4051e8     4     4  [c:\lcc\lib\advapi32.lib] 0.obj
+         .idata$5   4051ec     4     4  [c:\lcc\lib\advapi32.lib] 1.obj
+         .idata$5   4051f0     4     4  [c:\lcc\lib\advapi32.lib] 136.obj
+                    4051f0              __imp__GetUserNameA@8
+         .idata$5   4051f4     4     4  [c:\lcc\lib\advapi32.lib] 373.obj
+                    4051f4              __imp__RegCloseKey@4
+         .idata$5   4051f8     4     4  [c:\lcc\lib\advapi32.lib] 378.obj
+                    4051f8              __imp__RegOpenKeyExA@20
+         .idata$5   4051fc     4     4  [c:\lcc\lib\advapi32.lib] 389.obj
+                    4051fc              __imp__RegQueryValueExA@24
+         .idata$5   405200     4     4  [c:\lcc\lib\crtdll.lib] 0.obj
+         .idata$5   405204     4     4  [c:\lcc\lib\crtdll.lib] 1.obj
+         .idata$5   405208     4     4  [c:\lcc\lib\crtdll.lib] 25.obj
+                    405208              __imp___GetMainArgs
+         .idata$5   40520c     4     4  [c:\lcc\lib\crtdll.lib] 388.obj
+                    40520c              __imp___snprintf
+         .idata$5   405210     4     4  [c:\lcc\lib\crtdll.lib] 476.obj
+                    405210              __imp___vsnprintf
+         .idata$5   405214     4     4  [c:\lcc\lib\crtdll.lib] 522.obj
+                    405214              __imp__exit
+         .idata$5   405218     4     4  [c:\lcc\lib\crtdll.lib] 608.obj
+                    405218              __imp__raise
+         .idata$5   40521c     4     4  [c:\lcc\lib\crtdll.lib] 618.obj
+                    40521c              __imp__signal
+         .idata$5   405220     4     4  [c:\lcc\lib\crtdll.lib] 629.obj
+                    405220              __imp__strcpy
+         .idata$5   405224     4     4  [c:\lcc\lib\crtdll.lib] 633.obj
+                    405224              __imp__strlen
+         .idata$5   405228     4     4  [c:\lcc\lib\crtdll.lib] 638.obj
+                    405228              __imp__strrchr
+
+         .idata$6   40522c     4     4  c:\lcc\lib\lcccrt0s.obj
+         .idata$6   405230     e     e  [c:\lcc\lib\kernel32.lib] 130.obj
+         .idata$6   405240    12    12  [c:\lcc\lib\kernel32.lib] 176.obj
+         .idata$6   405254    16    16  [c:\lcc\lib\kernel32.lib] 267.obj
+         .idata$6   40526c     e     e  [c:\lcc\lib\kernel32.lib] 28.obj
+         .idata$6   40527c    16    16  [c:\lcc\lib\kernel32.lib] 320.obj
+         .idata$6   405294    10    10  [c:\lcc\lib\kernel32.lib] 322.obj
+         .idata$6   4052a4    10    10  [c:\lcc\lib\kernel32.lib] 324.obj
+         .idata$6   4052b4    1a    1a  [c:\lcc\lib\kernel32.lib] 345.obj
+         .idata$6   4052d0    10    10  [c:\lcc\lib\kernel32.lib] 350.obj
+         .idata$6   4052e0    10    10  [c:\lcc\lib\kernel32.lib] 412.obj
+         .idata$6   4052f0     e     e  [c:\lcc\lib\kernel32.lib] 50.obj
+         .idata$6   405300     c     c  [c:\lcc\lib\kernel32.lib] 527.obj
+         .idata$6   40530c    10    10  [c:\lcc\lib\kernel32.lib] 528.obj
+         .idata$6   40531c    10    10  [c:\lcc\lib\kernel32.lib] 565.obj
+         .idata$6   40532c    12    12  [c:\lcc\lib\kernel32.lib] 571.obj
+         .idata$6   405340    1e    1e  [c:\lcc\lib\kernel32.lib] 604.obj
+         .idata$6   405360    10    10  [c:\lcc\lib\kernel32.lib] 653.obj
+         .idata$6   405370     c     c  [c:\lcc\lib\kernel32.lib] 675.obj
+         .idata$6   40537c     c     c  [c:\lcc\lib\kernel32.lib] 705.obj
+         .idata$6   405388    10    10  [c:\lcc\lib\user32.lib] 15.obj
+         .idata$6   405398     e     e  [c:\lcc\lib\user32.lib] 309.obj
+         .idata$6   4053a8    10    10  [c:\lcc\lib\gdi32.lib] 272.obj
+         .idata$6   4053b8    10    10  [c:\lcc\lib\advapi32.lib] 136.obj
+         .idata$6   4053c8     e     e  [c:\lcc\lib\advapi32.lib] 373.obj
+         .idata$6   4053d8    10    10  [c:\lcc\lib\advapi32.lib] 378.obj
+         .idata$6   4053e8    14    14  [c:\lcc\lib\advapi32.lib] 389.obj
+         .idata$6   4053fc    10    10  [c:\lcc\lib\crtdll.lib] 25.obj
+         .idata$6   40540c     c     c  [c:\lcc\lib\crtdll.lib] 388.obj
+         .idata$6   405418     e     e  [c:\lcc\lib\crtdll.lib] 476.obj
+         .idata$6   405428     8     8  [c:\lcc\lib\crtdll.lib] 522.obj
+         .idata$6   405430     8     8  [c:\lcc\lib\crtdll.lib] 608.obj
+         .idata$6   405438     a     a  [c:\lcc\lib\crtdll.lib] 618.obj
+         .idata$6   405444     a     a  [c:\lcc\lib\crtdll.lib] 629.obj
+         .idata$6   405450     a     a  [c:\lcc\lib\crtdll.lib] 633.obj
+         .idata$6   40545c     a     a  [c:\lcc\lib\crtdll.lib] 638.obj
+
+         .idata$7   405468     e     e  [c:\lcc\lib\kernel32.lib] 0.obj
+                    405468              $tkernel
+         .idata$7   405478     4     4  [c:\lcc\lib\kernel32.lib] 130.obj
+         .idata$7   40547c     4     4  [c:\lcc\lib\kernel32.lib] 176.obj
+         .idata$7   405480     4     4  [c:\lcc\lib\kernel32.lib] 267.obj
+         .idata$7   405484     4     4  [c:\lcc\lib\kernel32.lib] 28.obj
+         .idata$7   405488     4     4  [c:\lcc\lib\kernel32.lib] 320.obj
+         .idata$7   40548c     4     4  [c:\lcc\lib\kernel32.lib] 322.obj
+         .idata$7   405490     4     4  [c:\lcc\lib\kernel32.lib] 324.obj
+         .idata$7   405494     4     4  [c:\lcc\lib\kernel32.lib] 345.obj
+         .idata$7   405498     4     4  [c:\lcc\lib\kernel32.lib] 350.obj
+         .idata$7   40549c     4     4  [c:\lcc\lib\kernel32.lib] 412.obj
+         .idata$7   4054a0     4     4  [c:\lcc\lib\kernel32.lib] 50.obj
+         .idata$7   4054a4     4     4  [c:\lcc\lib\kernel32.lib] 527.obj
+         .idata$7   4054a8     4     4  [c:\lcc\lib\kernel32.lib] 528.obj
+         .idata$7   4054ac     4     4  [c:\lcc\lib\kernel32.lib] 565.obj
+         .idata$7   4054b0     4     4  [c:\lcc\lib\kernel32.lib] 571.obj
+         .idata$7   4054b4     4     4  [c:\lcc\lib\kernel32.lib] 604.obj
+         .idata$7   4054b8     4     4  [c:\lcc\lib\kernel32.lib] 653.obj
+         .idata$7   4054bc     4     4  [c:\lcc\lib\kernel32.lib] 675.obj
+         .idata$7   4054c0     4     4  [c:\lcc\lib\kernel32.lib] 705.obj
+         .idata$7   4054c4     c     c  [c:\lcc\lib\user32.lib] 0.obj
+                    4054c4              $tuser32
+         .idata$7   4054d0     4     4  [c:\lcc\lib\user32.lib] 15.obj
+         .idata$7   4054d4     4     4  [c:\lcc\lib\user32.lib] 309.obj
+         .idata$7   4054d8     a     a  [c:\lcc\lib\gdi32.lib] 0.obj
+                    4054d8              $tgdi32
+         .idata$7   4054e4     4     4  [c:\lcc\lib\gdi32.lib] 272.obj
+         .idata$7   4054e8     e     e  [c:\lcc\lib\advapi32.lib] 0.obj
+                    4054e8              $tadvapi
+         .idata$7   4054f8     4     4  [c:\lcc\lib\advapi32.lib] 136.obj
+         .idata$7   4054fc     4     4  [c:\lcc\lib\advapi32.lib] 373.obj
+         .idata$7   405500     4     4  [c:\lcc\lib\advapi32.lib] 378.obj
+         .idata$7   405504     4     4  [c:\lcc\lib\advapi32.lib] 389.obj
+         .idata$7   405508     c     c  [c:\lcc\lib\crtdll.lib] 0.obj
+                    405508              $tcrtdll
+         .idata$7   405514     4     4  [c:\lcc\lib\crtdll.lib] 25.obj
+         .idata$7   405518     4     4  [c:\lcc\lib\crtdll.lib] 388.obj
+         .idata$7   40551c     4     4  [c:\lcc\lib\crtdll.lib] 476.obj
+         .idata$7   405520     4     4  [c:\lcc\lib\crtdll.lib] 522.obj
+         .idata$7   405524     4     4  [c:\lcc\lib\crtdll.lib] 608.obj
+         .idata$7   405528     4     4  [c:\lcc\lib\crtdll.lib] 618.obj
+         .idata$7   40552c     4     4  [c:\lcc\lib\crtdll.lib] 629.obj
+         .idata$7   405530     4     4  [c:\lcc\lib\crtdll.lib] 633.obj
+         .idata$7   405534     4     4  [c:\lcc\lib\crtdll.lib] 638.obj
+
+Section .text: 6276
+	c:\lcc\lib\lcccrt0s.obj:  668
+	uetest.obj:  400
+	ueh.obj:  4756
+	c:\lcc\lib\libc.lib: 32
+	c:\lcc\lib\kernel32.lib: 228
+	c:\lcc\lib\user32.lib: 24
+	c:\lcc\lib\gdi32.lib: 12
+	c:\lcc\lib\advapi32.lib: 48
+
+Section .bss: 0
+
+Section .data: 7400
+	c:\lcc\lib\lcccrt0s.obj:  148
+	uetest.obj:  8
+	ueh.obj:  7244
+	c:\lcc\lib\libc.lib: 0
+	c:\lcc\lib\kernel32.lib: 0
+	c:\lcc\lib\user32.lib: 0
+	c:\lcc\lib\gdi32.lib: 0
+	c:\lcc\lib\advapi32.lib: 0
+
+Section .idata: 1336
+	c:\lcc\lib\crtdll.lib: 20
+	c:\lcc\lib\kernel32.lib: 20
+	c:\lcc\lib\user32.lib: 20
+	c:\lcc\lib\gdi32.lib: 20
+	c:\lcc\lib\advapi32.lib: 20
+	c:\lcc\lib\lcccrt0s.obj:  96
+	c:\lcc\lib\kernel32.lib: 88
+	c:\lcc\lib\user32.lib: 16
+	c:\lcc\lib\gdi32.lib: 12
+	c:\lcc\lib\advapi32.lib: 24
+	c:\lcc\lib\crtdll.lib: 44
+	c:\lcc\lib\kernel32.lib: 84
+	c:\lcc\lib\user32.lib: 16
+	c:\lcc\lib\gdi32.lib: 12
+	c:\lcc\lib\advapi32.lib: 24
+	c:\lcc\lib\lcccrt0s.obj:  4
+	c:\lcc\lib\kernel32.lib: 342
+	c:\lcc\lib\user32.lib: 30
+	c:\lcc\lib\gdi32.lib: 16
+	c:\lcc\lib\advapi32.lib: 66
+	c:\lcc\lib\crtdll.lib: 96
+	c:\lcc\lib\kernel32.lib: 88
+	c:\lcc\lib\user32.lib: 18
+	c:\lcc\lib\gdi32.lib: 18
+	c:\lcc\lib\advapi32.lib: 28
+
+Section .edata: 0
+
+

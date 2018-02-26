@@ -1,0 +1,19 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "killprocres.h"
+
+1 ICON "hammer.ico"
+
+IDD_MAINDIALOG DIALOG 6, 18, 211, 173
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Kill Process"
+FONT 8, "MS Sans Serif"
+CLASS "killprocclass"
+BEGIN
+    PUSHBUTTON      "&Kill Process", IDD_KILL, 8, 149, 51, 14
+    PUSHBUTTON      "&Refresh", IDD_REFRESH, 80, 149, 51, 14
+    PUSHBUTTON      "&Quit", IDD_QUIT, 153, 149, 51, 14
+    CONTROL         "", IDD_LISTVIEW, "SysListView32", 0x1 | WS_BORDER, 6, 6, 199, 135
+END

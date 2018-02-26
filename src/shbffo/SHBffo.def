@@ -1,0 +1,5 @@
+LIBRARY shbffo
+EXPORTS
+	LibMain
+	BrowseForFolder
+	FileOperation

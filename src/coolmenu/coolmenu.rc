@@ -1,0 +1,60 @@
+#include "resource.h"
+
+#ifdef __LCC__
+#include "windows.h"
+#include "windowsx.h"
+#include "winver.h"
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        IDM_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            IDM_FILE_OPEN
+        MENUITEM "&Save\tCtrl+S",               IDM_FILE_SAVE
+        MENUITEM "Save &As...",                 IDM_FILE_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "Print",                       IDM_FILE_PRINT, GRAYED
+        MENUITEM "Print Preview",               IDM_FILE_PREVIEW, GRAYED
+        MENUITEM "Print Setup",                 IDM_FILE_SETUP, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_FILE_EXIT
+    END
+    POPUP "Context"
+    BEGIN
+        MENUITEM "&Docked\tCtrl+D",             IDM_TRACK_DOCK, CHECKED
+        MENUITEM "&Autohide",                   IDM_TRACK_AUTOHIDE, CHECKED
+        MENUITEM "&Always on &Top",             IDM_TRACK_ONTOP
+        MENUITEM SEPARATOR
+        MENUITEM "&Functions...\tCtrl+F",       IDM_TRACK_FUNCTIONS, GRAYED
+        MENUITEM "&Variables...",               IDM_TRACK_VARIABLES, GRAYED
+        POPUP "&Mode"
+        BEGIN
+            MENUITEM "&Computer",               IDM_MODE_COMPUTER, CHECKED
+            MENUITEM "&Scientific",             IDM_MODE_SCIENTIFIC
+            MENUITEM "&Fraction",               IDM_MODE_FRACTION
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&360 Display...",             IDM_TRACK_OPTIONS
+        MENUITEM "&Help\tF1",                   IDM_TRACK_HELP
+        MENUITEM "&About",                      IDM_TRACK_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      IDM_TRACK_CLOSE
+        MENUITEM "&Exit",                       IDM_TRACK_EXIT
+    END
+    POPUP "&Standard"
+    BEGIN
+        MENUITEM "Baseline\tCtrl+B", -1
+        MENUITEM "Info", IDM_STD_INFO, CHECKED
+        MENUITEM "About", -1
+    END
+END
+
+

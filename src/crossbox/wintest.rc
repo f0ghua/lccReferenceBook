@@ -1,0 +1,16 @@
+/* Wedit generated resource file */
+#ifdef __LCC__
+#include <windows.h>
+#endif
+#include "wintestres.h"
+
+1000 MENU
+BEGIN
+MENUITEM "crosshair",100
+END
+
+
+
+
+
+
